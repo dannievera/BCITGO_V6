@@ -263,6 +263,28 @@ namespace BCITGO_V6.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RidePointsSummary",
+                columns: table => new
+                {
+                    RidePointsSummaryId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TotalPointsEarned = table.Column<int>(type: "INTEGER", nullable: false),
+                    TotalPointsClaimed = table.Column<int>(type: "INTEGER", nullable: false),
+                    BalancePoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RidePointsSummary", x => x.RidePointsSummaryId);
+                    table.ForeignKey(
+                        name: "FK_RidePointsSummary_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rides",
                 columns: table => new
                 {
@@ -501,6 +523,11 @@ namespace BCITGO_V6.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RidePointsSummary_UserId",
+                table: "RidePointsSummary",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rides_DriverId",
                 table: "Rides",
                 column: "DriverId");
@@ -546,6 +573,9 @@ namespace BCITGO_V6.Migrations
 
             migrationBuilder.DropTable(
                 name: "RidePoints");
+
+            migrationBuilder.DropTable(
+                name: "RidePointsSummary");
 
             migrationBuilder.DropTable(
                 name: "SupportTickets");

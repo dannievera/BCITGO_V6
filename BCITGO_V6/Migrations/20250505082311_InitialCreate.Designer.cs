@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BCITGO_V6.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250504075031_InitialCreate")]
+    [Migration("20250505082311_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -263,6 +263,34 @@ namespace BCITGO_V6.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RidePoints", (string)null);
+                });
+
+            modelBuilder.Entity("BCITGO_V6.Models.RidePointsSummary", b =>
+                {
+                    b.Property<Guid>("RidePointsSummaryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("BalancePoints")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TotalPointsClaimed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TotalPointsEarned")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("RidePointsSummaryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RidePointsSummary", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Store", b =>
@@ -678,6 +706,17 @@ namespace BCITGO_V6.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BCITGO_V6.Models.RidePointsSummary", b =>
+                {
+                    b.HasOne("BCITGO_V6.Models.User", "User")
+                        .WithMany("RidePointsSummary")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BCITGO_V6.Models.SupportTicket", b =>
                 {
                     b.HasOne("BCITGO_V6.Models.User", "User")
@@ -769,6 +808,8 @@ namespace BCITGO_V6.Migrations
                     b.Navigation("ReviewsWritten");
 
                     b.Navigation("RidePoints");
+
+                    b.Navigation("RidePointsSummary");
 
                     b.Navigation("Rides");
 

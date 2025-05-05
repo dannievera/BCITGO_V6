@@ -27,6 +27,8 @@ namespace BCITGO_V6.Models
         public ICollection<SupportTicket> SupportTickets { get; set; } = new List<SupportTicket>();
         public ICollection<Donation> Donations { get; set; } = new List<Donation>();
         public ICollection<RidePoints> RidePoints { get; set; } = new List<RidePoints>();
+        public ICollection<RidePointsSummary> RidePointsSummary { get; set; } = new List<RidePointsSummary>();
+
         public ICollection<Invite> InvitesSent { get; set; } = new List<Invite>();
         public ICollection<PointClaim> PointClaims { get; set; } = new List<PointClaim>();
     }
