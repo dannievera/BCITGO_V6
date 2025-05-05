@@ -1,0 +1,34 @@
+﻿@* @{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to BCITGO!</h1>
+    <p>Your trusted ridesharing platform for BCIT students and community.</p>
+
+    <hr />
+
+    <p>
+        <a class="btn btn-primary btn-lg" asp-controller="Users" asp-action="Register">Sign Up</a>
+        <a class="btn btn-secondary btn-lg" asp-controller="Users" asp-action="Login">Login</a>
+    </p>
+
+    <h3>What you can do here:</h3>
+    <ul class="list-unstyled">
+        <li>✅ Find rides posted by other students</li>
+        <li>✅ Book your seat easily and securely</li>
+        <li>✅ Post your own rides and earn points</li>
+        <li>✅ Manage your profile and bookings</li>
+        <li>✅ Redeem points at campus stores</li>
+    </ul>
+</div>
