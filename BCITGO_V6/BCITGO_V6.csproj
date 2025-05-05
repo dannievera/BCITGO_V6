@@ -28,4 +28,12 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\000_images\Homepage-1.png" />
+    <None Include="wwwroot\000_images\Homepage-2.png" />
+    <None Include="wwwroot\000_images\Homepage-3.png" />
+    <None Include="wwwroot\000_images\Homepage-4.png" />
+    <None Include="wwwroot\000_images\Homepage-5.png" />
+  </ItemGroup>
+
 </Project>

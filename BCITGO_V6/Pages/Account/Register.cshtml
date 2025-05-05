@@ -1,0 +1,35 @@
+﻿@page
+@model BCITGO_V6.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Register.FullName" class="form-label"></label>
+        <input asp-for="Register.FullName" class="form-control" />
+        <span asp-validation-for="Register.FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Register.Email" class="form-label"></label>
+        <input asp-for="Register.Email" class="form-control" />
+        <span asp-validation-for="Register.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Register.Password" class="form-label"></label>
+        <input asp-for="Register.Password" class="form-control" type="password" />
+        <span asp-validation-for="Register.Password" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Register.ConfirmPassword" class="form-label"></label>
+        <input asp-for="Register.ConfirmPassword" class="form-control" type="password" />
+        <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
