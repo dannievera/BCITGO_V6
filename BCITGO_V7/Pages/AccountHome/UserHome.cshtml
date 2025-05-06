@@ -1,90 +1,65 @@
 ﻿@page "/UserHome"
 @model BCITGO_V6.Pages.AccountHome.UserHomeModel
 @{
-    ViewData["Title"] = "My Account Home";
+    ViewData["Title"] = "Dashboard";
     Layout = "_UserLayout";
 }
 
-<style>
-    body {
-        background-color: #f5f7fa;
-    }
+<div class="container">
+    <h2 class="mb-4">🏠 Welcome back, @Model.FullName!</h2>
 
-    .dashboard-title {
-        font-size: 2.8rem;
-        font-weight: 700;
-        color: #333;
-    }
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-5">
 
-    .card-option {
-        background: #fff;
-        border-radius: 16px;
-        padding: 30px;
-        transition: 0.3s ease;
-        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
-    }
-
-        .card-option:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-    .card-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #222;
-    }
-
-    .btn-modern {
-        background: linear-gradient(45deg, #2563eb, #1d4ed8);
-        color: white;
-        border: none;
-        padding: 8px 20px;
-        border-radius: 6px;
-        transition: 0.3s ease;
-    }
-
-        .btn-modern:hover {
-            background: linear-gradient(45deg, #1d4ed8, #1e40af);
-        }
-
-</style>
-
-<div class="container mt-5 text-center">
-
-    <h2 class="dashboard-title mb-5">🏡 Welcome back, @Model.FullName!</h2>
-
-    <div class="row justify-content-center g-4">
-
-        <div class="col-md-4">
-            <div class="card-option">
-                <div class="card-title">🚘 My Rides</div>
-                <p>View and manage your ride bookings easily.</p>
-                <a asp-page="/Rides/MyRides" class="btn btn-outline-primary btn-sm">View Rides</a>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6>Total Rides Taken</h6>
+                    <h3>12</h3>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card-option">
-                <div class="card-title">🎁 Points & Redemptions</div>
-                <p>Check your points and redeem exciting rewards.</p>
-                <a asp-page="/Points/MyPoints" class="btn btn-outline-primary btn-sm">View Points</a>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6>Points Earned</h6>
+                    <h3>680</h3>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card-option">
-                <div class="card-title">🛒 Store</div>
-                <p>Shop available products and services at any time.</p>
-                <a asp-page="/Store/Index" class="btn btn-outline-primary btn-sm">Go to Store</a>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6>Redemptions</h6>
+                    <h3>5</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h6>Profile Status</h6>
+                    <h3>✅ Verified</h3>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <div class="mt-5 text-center">
-        <a asp-page="/Profile/Profile" class="btn btn-modern">👤 View My Profile</a>
-        <a asp-page="/Register/Logout" class="btn btn-outline-danger btn-sm ms-2">🚪 Logout</a>
-    </div>
+    <!-- Recent Activity -->
+    <h4 class="mb-3">Recent Activity</h4>
 
+    <ul class="list-group mb-5">
+        <li class="list-group-item">🚘 Ride to Burnaby → Completed → <a asp-page="/Rides/MyRides">View</a></li>
+        <li class="list-group-item">🎁 Redeemed Starbucks Gift Card → 2 Days ago → <a asp-page="/Points/MyPoints">View</a></li>
+    </ul>
+
+    <!-- Quick Actions -->
+    <h4 class="mb-3">Quick Actions</h4>
+
+    <a asp-page="/Rides/MyRides" class="btn btn-outline-primary">Book a Ride</a>
+    <a asp-page="/Points/MyPoints" class="btn btn-outline-success ms-2">Redeem Points</a>
 </div>
