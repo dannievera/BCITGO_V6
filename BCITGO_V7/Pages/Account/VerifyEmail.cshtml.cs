@@ -34,14 +34,27 @@ namespace BCITGO_V6.Pages.Account
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                Message = "Your email has been verified successfully!";
+
+                using (var scope = HttpContext.RequestServices.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<BCITGO_V6.Data.ApplicationDbContext>();
+                    var appUser = dbContext.User.FirstOrDefault(u => u.Email == user.Email);
+                    if (appUser != null)
+                    {
+                        appUser.Status = "Active";
+                        dbContext.SaveChanges();
+                    }
+                }
+
+                TempData["Success"] = "Your email has been verified successfully! Login to access your account.";
+
             }
             else
             {
-                Message = "Email verification failed.";
+                TempData["Error"] = "Email verification failed.";
             }
 
-            return Page();
+            return RedirectToPage("/Account/Login");
         }
     }
 }

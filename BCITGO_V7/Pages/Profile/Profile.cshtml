@@ -1,0 +1,53 @@
+﻿@page
+@model BCITGO_V6.Pages.Profile.ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+    // Layout = "~/Pages/Shared/_Layout.cshtml"; // Update this path if your layout is located elsewhere
+    Layout = "_UserLayout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">👤 My Profile</h3>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Full Name</dt>
+                        <dd class="col-sm-8">@Model.FullName</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Role</dt>
+                        <dd class="col-sm-8">@Model.Role</dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Status == "Active")
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@Model.Status</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Created At</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt.ToString("MMMM dd, yyyy")</dd>
+
+                        <dt class="col-sm-4">Last Active</dt>
+                        <dd class="col-sm-8">@Model.LastActiveAt.ToString("MMMM dd, yyyy")</dd>
+                    </dl>
+
+                    <div class="mt-4">
+                        <a asp-page="/Account/EditProfile" class="btn btn-outline-primary">Edit Profile</a>
+                        <a asp-page="/Account/Logout" class="btn btn-outline-danger ms-2">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
