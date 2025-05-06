@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BCITGO_V6.Models
 {
@@ -8,12 +9,13 @@ namespace BCITGO_V6.Models
         [Key]
         public int RidePointsId { get; set; }
 
-        public int UserId { get; set; }
+
         public int Points { get; set; }
         public string Reason { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
 
         // Navigation
-        public User? User { get; set; }
+        [ForeignKey("UserId")]
+        public int UserId { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BCITGO_V6.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250505082311_InitialCreate")]
+    [Migration("20250506031945_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -22,9 +22,9 @@ namespace BCITGO_V6.Migrations
 
             modelBuilder.Entity("BCITGO_V6.Models.Booking", b =>
                 {
-                    b.Property<Guid>("BookingId")
+                    b.Property<int>("BookingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("BookingMessage")
                         .HasColumnType("TEXT");
@@ -32,11 +32,8 @@ namespace BCITGO_V6.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("PassengerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("RideId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("RideId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("SeatsBooked")
                         .HasColumnType("INTEGER");
@@ -45,23 +42,21 @@ namespace BCITGO_V6.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("BookingId");
 
-                    b.HasIndex("PassengerId");
-
                     b.HasIndex("RideId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("BOOKINGS", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Donation", b =>
                 {
-                    b.Property<Guid>("DonationId")
+                    b.Property<int>("DonationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
@@ -72,79 +67,76 @@ namespace BCITGO_V6.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("DonationId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Donations", (string)null);
+                    b.ToTable("DONATION", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Invite", b =>
                 {
-                    b.Property<Guid>("InviteId")
+                    b.Property<int>("InviteId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("InviteEmail")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("InviterUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("InviteId");
-
-                    b.HasIndex("InviterUserId");
-
-                    b.ToTable("Invites", (string)null);
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.PointClaim", b =>
-                {
-                    b.Property<Guid>("PointClaimId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AmountClaimed")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("InviteeEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("InviteeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("StoreId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("InviteId");
+
+                    b.ToTable("INVITES", (string)null);
+                });
+
+            modelBuilder.Entity("BCITGO_V6.Models.PointRedemption", b =>
+                {
+                    b.Property<int>("RedemptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<int>("PointsRedeemed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("PointClaimId");
+                    b.Property<int>("StoreId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RedemptionId");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PointClaims", (string)null);
+                    b.ToTable("POINT_REDEMPTIONS", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Review", b =>
                 {
-                    b.Property<Guid>("ReviewId")
+                    b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -155,35 +147,27 @@ namespace BCITGO_V6.Migrations
                     b.Property<string>("ReviewText")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ReviewedUserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("RevieweeId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("ReviewerId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("RideId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("RideId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("ReviewedUserId");
-
-                    b.HasIndex("ReviewerId");
-
                     b.HasIndex("RideId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("REVIEWS", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Ride", b =>
                 {
-                    b.Property<Guid>("RideId")
+                    b.Property<int>("RideId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AvailableSeats")
                         .HasColumnType("INTEGER");
@@ -197,20 +181,17 @@ namespace BCITGO_V6.Migrations
                     b.Property<TimeSpan>("DepartureTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("DriverId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("EndLocation")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LuggageAllowed")
-                        .HasColumnType("TEXT");
+                    b.Property<bool?>("LuggageAllowed")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Notes")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("PetsAllowed")
+                    b.Property<bool?>("PetsAllowed")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("PricePerSeat")
@@ -224,82 +205,53 @@ namespace BCITGO_V6.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("RideId");
 
-                    b.HasIndex("DriverId");
-
-                    b.ToTable("Rides", (string)null);
+                    b.ToTable("RIDES", (string)null);
                 });
 
-            modelBuilder.Entity("BCITGO_V6.Models.RidePoints", b =>
+            modelBuilder.Entity("BCITGO_V6.Models.RidePoint", b =>
                 {
-                    b.Property<Guid>("RidePointsId")
+                    b.Property<int>("RidePointsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Amount")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("RideId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Points")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Source")
+                    b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("RidePointsId");
 
-                    b.HasIndex("RideId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RidePoints", (string)null);
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.RidePointsSummary", b =>
-                {
-                    b.Property<Guid>("RidePointsSummaryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("BalancePoints")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TotalPointsClaimed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TotalPointsEarned")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("RidePointsSummaryId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RidePointsSummary", (string)null);
+                    b.ToTable("RIDEPOINTS", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Store", b =>
                 {
-                    b.Property<Guid>("StoreId")
+                    b.Property<int>("StoreId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("StoreName")
@@ -308,17 +260,43 @@ namespace BCITGO_V6.Migrations
 
                     b.HasKey("StoreId");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("STORES", (string)null);
+                });
+
+            modelBuilder.Entity("BCITGO_V6.Models.SupportComment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("SupportTicketTicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("SupportTicketTicketId");
+
+                    b.ToTable("SUPPORT_COMMENTS", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.SupportTicket", b =>
                 {
-                    b.Property<Guid>("TicketId")
+                    b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AdminNotes")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -331,28 +309,19 @@ namespace BCITGO_V6.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("TicketId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SupportTickets", (string)null);
+                    b.ToTable("SUPPORT_TICKETS", (string)null);
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.User", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AccountStatus")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BanReason")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Bio")
                         .HasColumnType("TEXT");
@@ -364,11 +333,11 @@ namespace BCITGO_V6.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("EmailVerified")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("FullName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastActiveAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
@@ -385,12 +354,13 @@ namespace BCITGO_V6.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("USERS", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -592,140 +562,36 @@ namespace BCITGO_V6.Migrations
 
             modelBuilder.Entity("BCITGO_V6.Models.Booking", b =>
                 {
-                    b.HasOne("BCITGO_V6.Models.User", "Passenger")
-                        .WithMany("Bookings")
-                        .HasForeignKey("PassengerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BCITGO_V6.Models.Ride", "Ride")
+                    b.HasOne("BCITGO_V6.Models.Ride", null)
                         .WithMany("Bookings")
                         .HasForeignKey("RideId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Passenger");
-
-                    b.Navigation("Ride");
                 });
 
-            modelBuilder.Entity("BCITGO_V6.Models.Donation", b =>
+            modelBuilder.Entity("BCITGO_V6.Models.PointRedemption", b =>
                 {
-                    b.HasOne("BCITGO_V6.Models.User", "User")
-                        .WithMany("Donations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.Invite", b =>
-                {
-                    b.HasOne("BCITGO_V6.Models.User", "InviterUser")
-                        .WithMany("InvitesSent")
-                        .HasForeignKey("InviterUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("InviterUser");
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.PointClaim", b =>
-                {
-                    b.HasOne("BCITGO_V6.Models.Store", "Store")
-                        .WithMany("PointClaims")
+                    b.HasOne("BCITGO_V6.Models.Store", null)
+                        .WithMany("PointRedemptions")
                         .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("BCITGO_V6.Models.User", "User")
-                        .WithMany("PointClaims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Store");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Review", b =>
                 {
-                    b.HasOne("BCITGO_V6.Models.User", "ReviewedUser")
-                        .WithMany("ReviewsReceived")
-                        .HasForeignKey("ReviewedUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BCITGO_V6.Models.User", "Reviewer")
-                        .WithMany("ReviewsWritten")
-                        .HasForeignKey("ReviewerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BCITGO_V6.Models.Ride", "Ride")
+                    b.HasOne("BCITGO_V6.Models.Ride", null)
                         .WithMany("Reviews")
                         .HasForeignKey("RideId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ReviewedUser");
-
-                    b.Navigation("Reviewer");
-
-                    b.Navigation("Ride");
                 });
 
-            modelBuilder.Entity("BCITGO_V6.Models.Ride", b =>
+            modelBuilder.Entity("BCITGO_V6.Models.SupportComment", b =>
                 {
-                    b.HasOne("BCITGO_V6.Models.User", "Driver")
-                        .WithMany("Rides")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Driver");
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.RidePoints", b =>
-                {
-                    b.HasOne("BCITGO_V6.Models.Ride", "Ride")
-                        .WithMany("RidePoints")
-                        .HasForeignKey("RideId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("BCITGO_V6.Models.User", "User")
-                        .WithMany("RidePoints")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Ride");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.RidePointsSummary", b =>
-                {
-                    b.HasOne("BCITGO_V6.Models.User", "User")
-                        .WithMany("RidePointsSummary")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BCITGO_V6.Models.SupportTicket", b =>
-                {
-                    b.HasOne("BCITGO_V6.Models.User", "User")
-                        .WithMany("SupportTickets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.HasOne("BCITGO_V6.Models.SupportTicket", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("SupportTicketTicketId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -784,36 +650,16 @@ namespace BCITGO_V6.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("RidePoints");
                 });
 
             modelBuilder.Entity("BCITGO_V6.Models.Store", b =>
                 {
-                    b.Navigation("PointClaims");
+                    b.Navigation("PointRedemptions");
                 });
 
-            modelBuilder.Entity("BCITGO_V6.Models.User", b =>
+            modelBuilder.Entity("BCITGO_V6.Models.SupportTicket", b =>
                 {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("Donations");
-
-                    b.Navigation("InvitesSent");
-
-                    b.Navigation("PointClaims");
-
-                    b.Navigation("ReviewsReceived");
-
-                    b.Navigation("ReviewsWritten");
-
-                    b.Navigation("RidePoints");
-
-                    b.Navigation("RidePointsSummary");
-
-                    b.Navigation("Rides");
-
-                    b.Navigation("SupportTickets");
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

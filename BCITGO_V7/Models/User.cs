@@ -22,16 +22,17 @@ namespace BCITGO_V6.Models
         public DateTime LastActiveAt { get; set; }
 
         // Navigation
-        public ICollection<Ride>? Rides { get; set; }
-        public ICollection<Booking>? Bookings { get; set; }
-        public ICollection<Review>? ReviewsWritten { get; set; }
-        public ICollection<Review>? ReviewsReceived { get; set; }
-        public ICollection<RidePoint>? RidePoints { get; set; }
-        public ICollection<PointRedemption>? PointRedemptions { get; set; }
-        public ICollection<Invite>? InvitesSent { get; set; }
-        public ICollection<SupportTicket>? SupportTickets { get; set; }
-        public ICollection<SupportComment>? SupportComments { get; set; }
-        public ICollection<Donation>? Donations { get; set; }
+        //public ICollection<Ride>? Rides { get; set; }
+        //public ICollection<Booking>? Bookings { get; set; }
+        //public ICollection<Review>? ReviewsWritten { get; set; }
+        //public ICollection<Review>? ReviewsReceived { get; set; }
+        //public ICollection<RidePoint>? RidePoints { get; set; }
+        //public ICollection<PointRedemption>? PointRedemptions { get; set; }
+        //public ICollection<Invite>? InvitesSent { get; set; }
+        //public ICollection<Invite>? InvitesReceived { get; set; }
+        //public ICollection<SupportTicket>? SupportTickets { get; set; }
+        //public ICollection<SupportComment>? SupportComments { get; set; }
+        //public ICollection<Donation>? Donations { get; set; }
     }
 }
 

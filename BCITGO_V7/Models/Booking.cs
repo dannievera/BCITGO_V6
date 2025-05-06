@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BCITGO_V6.Models
 {
@@ -8,15 +9,18 @@ namespace BCITGO_V6.Models
         [Key]
         public int BookingId { get; set; }
 
-        public int RideId { get; set; }
-        public int UserId { get; set; }
+
+
         public int SeatsBooked { get; set; }
         public string? BookingMessage { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
 
         // Navigation
-        public Ride? Ride { get; set; }
-        public User? User { get; set; }
+        [ForeignKey("RideId")]
+        public int RideId { get; set; }
+
+        [ForeignKey("UserId")]
+        public int UserId { get; set; }
     }
 }

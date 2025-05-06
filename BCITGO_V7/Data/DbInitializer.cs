@@ -23,7 +23,7 @@ namespace BCITGO_V6.Data
 
                 // Check if any data exists to avoid duplication
                 if (context.PointRedemption.Any() || context.RidePoint.Any() || context.Store.Any() ||
-                    context.User.Any() || context.Invite.Any() || context.Rides.Any() ||
+                    context.User.Any() || context.Invite.Any() || context.Ride.Any() ||
                     context.SupportTicket.Any() || context.Booking.Any() || context.Review.Any() ||
                     context.SupportComment.Any())
                 {
