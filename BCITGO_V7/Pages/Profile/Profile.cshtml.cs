@@ -26,6 +26,8 @@ namespace BCITGO_V6.Pages.Profile
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastActiveAt { get; set; }
+        public string ProfilePicture { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync()
         {

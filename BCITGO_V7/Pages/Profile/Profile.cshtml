@@ -2,49 +2,68 @@
 @model BCITGO_V6.Pages.Profile.ProfileModel
 @{
     ViewData["Title"] = "My Profile";
-    // Layout = "~/Pages/Shared/_Layout.cshtml"; // Update this path if your layout is located elsewhere
     Layout = "_UserLayout";
 }
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title mb-4">👤 My Profile</h3>
+            <div class="card shadow-sm border-0 rounded-4 p-4" style="background: linear-gradient(135deg, #ffffff 0%, #f7f9fb 100%);">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                        {
+                            <img src="@Model.ProfilePicture" class="rounded-circle shadow-sm mb-3" style="width: 100px; height: 100px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-person-circle" style="font-size: 3rem; color: #6c757d;"></i>
+                        }
 
-                    <dl class="row">
-                        <dt class="col-sm-4">Full Name</dt>
-                        <dd class="col-sm-8">@Model.FullName</dd>
+                        <h3 class="mt-2 fw-bold">My Profile</h3>
+                        <p class="text-muted">Manage your account details</p>
+                    </div>
 
-                        <dt class="col-sm-4">Email</dt>
-                        <dd class="col-sm-8">@Model.Email</dd>
+                    <div class="text-start mb-4">
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span class="text-muted">Full Name</span>
+                            <span>@Model.FullName</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span class="text-muted">Email</span>
+                            <span>@Model.Email</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span class="text-muted">Role</span>
+                            <span>@Model.Role</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span class="text-muted">Status</span>
+                            <span>
+                                @if (Model.Status == "Active")
+                                {
+                                    <span class="badge bg-success rounded-pill px-3 py-1">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary rounded-pill px-3 py-1">@Model.Status</span>
+                                }
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span class="text-muted">Created At</span>
+                            <span>@Model.CreatedAt.ToString("MMMM dd, yyyy")</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2">
+                            <span class="text-muted">Last Active</span>
+                            <span>@Model.LastActiveAt.ToString("MMMM dd, yyyy")</span>
+                        </div>
+                    </div>
 
-                        <dt class="col-sm-4">Role</dt>
-                        <dd class="col-sm-8">@Model.Role</dd>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a asp-page="/Profile/EditProfile" class="btn btn-outline-primary btn-rounded px-4 py-2 fw-semibold">Edit Profile</a>
+                        <a asp-page="/Index" class="btn btn-outline-danger btn-rounded px-4 py-2 fw-semibold">Logout</a>
 
-                        <dt class="col-sm-4">Status</dt>
-                        <dd class="col-sm-8">
-                            @if (Model.Status == "Active")
-                            {
-                                <span class="badge bg-success">Active</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">@Model.Status</span>
-                            }
-                        </dd>
-
-                        <dt class="col-sm-4">Created At</dt>
-                        <dd class="col-sm-8">@Model.CreatedAt.ToString("MMMM dd, yyyy")</dd>
-
-                        <dt class="col-sm-4">Last Active</dt>
-                        <dd class="col-sm-8">@Model.LastActiveAt.ToString("MMMM dd, yyyy")</dd>
-                    </dl>
-
-                    <div class="mt-4">
-                        <a asp-page="/Account/EditProfile" class="btn btn-outline-primary">Edit Profile</a>
-                        <a asp-page="/Account/Logout" class="btn btn-outline-danger ms-2">Logout</a>
                     </div>
                 </div>
             </div>

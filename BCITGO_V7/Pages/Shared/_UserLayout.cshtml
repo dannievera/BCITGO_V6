@@ -1,85 +1,150 @@
-﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BCIT GO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
         body {
             background-color: #f8fafc;
             font-family: 'Segoe UI', Tahoma, sans-serif;
         }
 
-        .sidebar {
-            width: 240px;
-            min-height: 100vh;
+        .navbar {
             background-color: #0d47a1;
-            color: white;
-            position: fixed;
-            padding-top: 20px;
         }
 
-            .sidebar .brand {
-                font-size: 1.4rem;
-                font-weight: bold;
-                text-align: center;
-                padding-bottom: 20px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            }
+        .navbar-brand, .nav-link, .dropdown-toggle {
+            color: white !important;
+        }
 
-            .sidebar a {
-                color: #cfd8dc;
-                padding: 12px 20px;
-                display: block;
-                text-decoration: none;
-                transition: 0.2s;
-            }
+        .dropdown-menu a {
+            color: #333 !important;
+        }
 
-                .sidebar a:hover, .sidebar a.active {
-                    background-color: #1976d2;
-                    color: white;
-                }
+            .dropdown-menu a:hover {
+                background-color: #f8f9fa;
+            }
 
         .content {
-            margin-left: 240px;
             padding: 40px;
+            padding-bottom: 80px;
         }
 
         footer {
-            color: #888;
+            background-color: #f1f1f1;
+            color: #666;
             text-align: center;
-            padding: 20px 0;
+            padding: 15px 0;
             font-size: 0.9rem;
             margin-top: 30px;
         }
+
+        /* Card Modern Style */
+        .card {
+            background: linear-gradient(135deg, #ffffff 0%, #f7f9fb 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            }
+
+        .btn-rounded {
+            border-radius: 50px;
+        }
+
+        /* Dropdown on hover */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+            left: auto;
+            right: 0;
+        }
+
+
+        /*make the dropdown wider*/
+        .dropdown-menu {
+            min-width: 180px;
+            padding: 0.5rem 0;
+            border-radius: 0.5rem;
+        }
+
+
+        .dropdown-divider {
+            border-top: 1px solid #e9ecef;
+        }
+
+        .navbar-brand {
+            padding-left: 1rem;
+            font-weight: 700;
+            font-size: 1.6rem;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar .nav-link {
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+            .navbar .nav-link i {
+                font-size: 1.2rem; /* slightly bigger icons */
+            }
+
+
+
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="brand">BCIT GO</div>
-        <a asp-page="/UserHome" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/UserHome" ? "active" : "")">🏠 Dashboard</a>
-        <a asp-page="/Rides/MyRides">🚘 My Rides</a>
-        <a asp-page="/Points/MyPoints">🎁 Points</a>
-        <a asp-page="/Store/Index">🛒 Store</a>
-        <a asp-page="/Profile/Profile">👤 My Profile</a>
-        <a asp-page="/Account/Logout">🚪 Logout</a>
-    </div>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container-fluid">
 
-    <!-- CONTENT -->
-    <div class="content">
+            <a class="navbar-brand fw-bold fs-3" href="/UserHome" style="letter-spacing: 0.5px;">
+                BCIT GO
+            </a>
+
+
+
+            <div class="d-flex align-items-center">
+                <a asp-page="/Profile/Profile" class="nav-link me-3"><i class="bi bi-person-circle"></i> My Profile</a>
+                <a asp-page="/Index" class="nav-link me-3"><i class="bi bi-box-arrow-right"></i> Logout</a>
+
+                <!-- Hamburger Menu (hover enabled) -->
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button">
+                        <i class="bi bi-list fs-4"></i>
+
+                    </a>
+                    <ul class="dropdown-menu shadow">
+                        <li><a class="dropdown-item py-2" asp-page="/Rides/MyRides"><i class="bi bi-car-front"></i> My Rides</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2" asp-page="/Points/MyPoints"><i class="bi bi-gift"></i> Points</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2" asp-page="/Index"><i class="bi bi-bag"></i> Store</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content container">
         @RenderBody()
     </div>
 
-    <!-- FOOTER -->
     <footer>
         &copy; 2025 BCIT GO - Connected Rides & Community
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
