@@ -41,6 +41,17 @@ namespace BCITGO_V6
             // Add Razor Pages for Identity 
             builder.Services.AddRazorPages();
 
+            // Add Session service
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+
+
             var app = builder.Build();
 
             // Apply migrations and ensure the database is created
@@ -74,16 +85,21 @@ namespace BCITGO_V6
 
             app.UseRouting();
 
-            app.UseAuthentication(); // Required for Identity 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            // Add Session middleware
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.MapRazorPages(); // Enable Razor Pages for Identity 
+            app.MapRazorPages();
 
             app.Run();
+
         }
     }
+
 }

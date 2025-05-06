@@ -8,6 +8,9 @@ namespace BCITGO_V6.Models
     {
         [Key]
         public int UserId { get; set; }
+        public string? IdentityUserId { get; set; }  // <-- this links to AspNetUsers.Id
+
+
 
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

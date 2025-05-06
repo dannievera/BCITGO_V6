@@ -43,8 +43,24 @@ namespace BCITGO_V6.Pages.Account
 
             if (result.Succeeded)
             {
-                TempData["Success"] = "Account registered successfully!";
-                return RedirectToPage("/Index");
+                // Generate email verification token
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var verificationLink = Url.Page(
+                    "/Account/VerifyEmail",
+                    pageHandler: null,
+                    values: new { userId = user.Id, token = token },
+                    protocol: Request.Scheme);
+
+                // Send email
+                var emailSender = new Helpers.EmailSender();
+                await emailSender.SendEmailAsync(user.Email, "Verify your BCITGO Account", $"Please verify your account by clicking here: {verificationLink}");
+
+                HttpContext.Session.SetString("VerificationUserId", user.Id);
+
+
+
+                TempData["Success"] = "Account registered successfully! Please check your email to verify your account.";
+                return RedirectToPage("/Account/Verify");
             }
             else
             {

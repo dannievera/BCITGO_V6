@@ -1,0 +1,27 @@
+﻿@page
+@model BCITGO_V6.Pages.Account.VerifyModel
+@{
+    ViewData["Title"] = "Verify Email";
+}
+
+<h2>Thanks for signing up!</h2>
+<p>Please check your email and verify your account.</p>
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<form method="post">
+    <button type="submit" class="btn btn-primary" @(Model.CanResend ? "" : "disabled")>
+        @if (Model.CanResend)
+        {
+            <text>Didn't get it? Resend Verification Email</text>
+        }
+        else
+        {
+            <text>Wait 1 minute before resending...</text>
+        }
+    </button>
+</form>
+</p>

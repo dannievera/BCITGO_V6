@@ -5,6 +5,12 @@
 }
 
 <h2>Thanks for signing up!</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
 <p>Please check your email and verify your account.</p>
 
 @if (Model.Message != null)
@@ -13,15 +19,36 @@
 }
 
 <form method="post">
-    <button type="submit" class="btn btn-primary" @(Model.CanResend ? "" : "disabled")>
+    <button type="submit" class="btn btn-primary" id="resendButton" @(Model.CanResend ? "" : "disabled")>
         @if (Model.CanResend)
         {
             <text>Didn't get it? Resend Verification Email</text>
         }
         else
         {
-            <text>Wait 1 minute before resending...</text>
+            <span id="countdownText">Wait 5 seconds before resending...</span>
         }
     </button>
 </form>
-</p>
+
+
+<!--SCRIPT FOR COUNTDOWN BELOW-->
+<script>
+    var canResend = @Model.CanResend.ToString().ToLower();
+    if (!canResend) {
+        var countdown = 5;
+        var countdownText = document.getElementById("countdownText");
+        var resendButton = document.getElementById("resendButton");
+
+        var interval = setInterval(function () {
+            countdown--;
+            countdownText.innerText = "Wait " + countdown + " seconds before resending...";
+
+            if (countdown <= 0) {
+                clearInterval(interval);
+                resendButton.disabled = false;
+                resendButton.innerText = "Didn't get it? Resend Verification Email";
+            }
+        }, 1000);
+    }
+</script>
