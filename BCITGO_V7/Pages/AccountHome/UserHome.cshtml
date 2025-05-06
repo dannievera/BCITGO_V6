@@ -5,45 +5,86 @@
     Layout = "_UserLayout";
 }
 
-<div class="container mt-5">
-    <h2 class="mb-4">🏠 Welcome back, @Model.FullName!</h2>
+<style>
+    body {
+        background-color: #f5f7fa;
+    }
 
-    <div class="row g-4">
+    .dashboard-title {
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .card-option {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        transition: 0.3s ease;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .card-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .btn-modern {
+        background: linear-gradient(45deg, #2563eb, #1d4ed8);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 6px;
+        transition: 0.3s ease;
+    }
+
+        .btn-modern:hover {
+            background: linear-gradient(45deg, #1d4ed8, #1e40af);
+        }
+
+</style>
+
+<div class="container mt-5 text-center">
+
+    <h2 class="dashboard-title mb-5">🏡 Welcome back, @Model.FullName!</h2>
+
+    <div class="row justify-content-center g-4">
 
         <div class="col-md-4">
-            <div class="card text-center shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">🚘 My Rides</h5>
-                    <p class="card-text">View and manage your ride bookings.</p>
-                    <a asp-page="/Rides/MyRides" class="btn btn-outline-primary btn-sm">View Rides</a>
-                </div>
+            <div class="card-option">
+                <div class="card-title">🚘 My Rides</div>
+                <p>View and manage your ride bookings easily.</p>
+                <a asp-page="/Rides/MyRides" class="btn btn-outline-primary btn-sm">View Rides</a>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card text-center shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">🎁 Points & Redemptions</h5>
-                    <p class="card-text">Check your earned points and redeem rewards.</p>
-                    <a asp-page="/Points/MyPoints" class="btn btn-outline-primary btn-sm">View Points</a>
-                </div>
+            <div class="card-option">
+                <div class="card-title">🎁 Points & Redemptions</div>
+                <p>Check your points and redeem exciting rewards.</p>
+                <a asp-page="/Points/MyPoints" class="btn btn-outline-primary btn-sm">View Points</a>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card text-center shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">🛒 Store</h5>
-                    <p class="card-text">Shop available products and services.</p>
-                    <a asp-page="/Store/Index" class="btn btn-outline-primary btn-sm">Go to Store</a>
-                </div>
+            <div class="card-option">
+                <div class="card-title">🛒 Store</div>
+                <p>Shop available products and services at any time.</p>
+                <a asp-page="/Store/Index" class="btn btn-outline-primary btn-sm">Go to Store</a>
             </div>
         </div>
 
     </div>
 
     <div class="mt-5 text-center">
-        <a asp-page="/Profile/Profile" class="btn btn-secondary btn-sm">👤 View My Profile</a>
-        <a asp-page="/Account/Logout" class="btn btn-outline-danger btn-sm ms-2">🚪 Logout</a>
+        <a asp-page="/Profile/Profile" class="btn btn-modern">👤 View My Profile</a>
+        <a asp-page="/Register/Logout" class="btn btn-outline-danger btn-sm ms-2">🚪 Logout</a>
     </div>
+
 </div>

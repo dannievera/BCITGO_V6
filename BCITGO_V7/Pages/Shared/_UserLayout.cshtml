@@ -1,68 +1,91 @@
-﻿<!DOCTYPE html>
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BCIT GO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
     <style>
         body {
-            background-color: #f9f9fb;
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .nav-link {
-            color: white !important;
-        }
-
-        .profile-menu {
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background-color: #1e3a8a;
             color: white;
-            font-weight: 500;
+            position: fixed;
+        }
+
+            .sidebar a {
+                color: #cbd5e1;
+                padding: 12px 20px;
+                display: block;
+                text-decoration: none;
+                transition: 0.2s;
+                font-weight: 500;
+            }
+
+                .sidebar a:hover,
+                .sidebar a.active {
+                    background-color: #3b82f6;
+                    color: white;
+                }
+
+            .sidebar .brand {
+                padding: 20px;
+                font-size: 1.5rem;
+                font-weight: bold;
+                background-color: #1e40af;
+                text-align: center;
+            }
+
+        .content {
+            margin-left: 250px;
+            padding: 40px;
         }
 
         footer {
-            margin-top: 50px;
             color: #888;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            font-size: 0.9rem;
         }
     </style>
+
+
+
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/">BCIT GO</a>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="brand">BCIT GO</div>
 
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-
-                    <li class="nav-item">
-                        <a asp-page="/Profile/Profile" class="nav-link">My Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-page="/Register/Logout" class="nav-link">Logout</a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+        <a asp-page="/UserHome" class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/UserHome" ? "active" : "")">🏠 Dashboard</a>
+        <a asp-page="/Rides/MyRides">🚘 My Rides</a>
+        <a asp-page="/Points/MyPoints">🎁 Points</a>
+        <a asp-page="/Store/Index">🛒 Store</a>
+        <a asp-page="/Profile/Profile">👤 My Profile</a>
+        <a asp-page="/Account/Logout">🚪 Logout</a>
+    </div>
 
     <!-- MAIN CONTENT -->
-    <main class="container mt-4">
+    <div class="content">
         @RenderBody()
-    </main>
+    </div>
 
     <!-- FOOTER -->
-    <footer class="text-center small mt-5 mb-4">
+    <footer>
         &copy; 2025 BCIT GO - Connected Rides & Community
     </footer>
 
-    <!-- SCRIPTS -->
     @RenderSection("Scripts", required: false)
 </body>
 </html>
