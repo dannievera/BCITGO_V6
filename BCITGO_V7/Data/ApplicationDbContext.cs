@@ -47,6 +47,10 @@ namespace BCITGO_V6.Data
 
 
             // Relationships  
+            modelBuilder.Entity<User>()
+                .Property(u => u.IdentityUserId)
+                .HasMaxLength(100);
+
 
             //// STORES > POINT REDEMPTIONS
             //modelBuilder.Entity<PointRedemption>()
