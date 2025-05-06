@@ -7,6 +7,11 @@
 <h2>Register</h2>
 
 <form method="post">
+
+    <!--added for checking all values--!>
+
+    <div asp-validation-summary="All" class="text-danger"></div> 
+
     <div class="mb-3">
         <label asp-for="Input.FullName" class="form-label"></label>
         <input asp-for="Input.FullName" class="form-control" />

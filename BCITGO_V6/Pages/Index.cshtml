@@ -5,6 +5,14 @@
     Layout = "_LandingPageLayout"; 
 }
 
+<!--Added dvb 0505--> <!--Shows success message-->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["Success"]
+    </div>
+}
+
 <div id="homepageCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
 

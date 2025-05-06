@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using BCITGO_V6.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BCITGO_V6.Data
 {
-    public class ApplicationDbContext : IdentityDbContext // Fix: Inherit from IdentityDbContext or DbContext  
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser> // Fix: Inherit from IdentityDbContext or DbContext  
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

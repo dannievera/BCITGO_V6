@@ -1,0 +1,71 @@
+﻿@model IEnumerable<BCITGO_V6.Models.Review>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ride)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reviewer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewedUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ride.RideId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reviewer.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewedUser.UserId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ReviewId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
