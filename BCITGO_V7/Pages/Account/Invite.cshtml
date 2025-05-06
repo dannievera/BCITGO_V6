@@ -1,0 +1,26 @@
+﻿@page
+@model BCITGO_V6.Pages.Account.InviteModel
+@{
+    ViewData["Title"] = "Invite Friends";
+}
+
+<h2>Invite a Friend</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Input.Email" class="form-control" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Send Invite</button>
+</form>
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-info mt-3">@Model.Message</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
