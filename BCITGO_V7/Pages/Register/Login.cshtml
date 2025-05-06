@@ -75,7 +75,7 @@
 
 
 @page
-@model BCITGO_V6.Pages.Account.LoginModel
+@model BCITGO_V6.Pages.Register.LoginModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Login";
@@ -177,9 +177,9 @@
                         <button type="submit" class="btn btn-primary w-100">Login</button>
 
                         <div class="mt-4 text-center small login-links">
-                            <a asp-page="/Account/ForgotPassword">Forgot Password?</a>
+                            <a asp-page="/Register/ForgotPassword">Forgot Password?</a>
                             <span class="mx-2">|</span>
-                            <a asp-page="/Account/Register">Create Account</a>
+                            <a asp-page="/Register/Register">Create Account</a>
                         </div>
 
                     </form>

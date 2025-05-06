@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class VerifyModel : PageModel
     {
@@ -75,7 +75,7 @@ namespace BCITGO_V6.Pages.Account
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var verificationLink = Url.Page(
-                "/Account/VerifyEmail",
+                "/Register/VerifyEmail",
                 pageHandler: null,
                 values: new { userId = user.Id, token = token },
                 protocol: Request.Scheme);

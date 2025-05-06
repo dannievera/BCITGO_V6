@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class InviteModel : PageModel
     {

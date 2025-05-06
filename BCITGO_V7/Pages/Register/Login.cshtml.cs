@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class LoginModel : PageModel
     {
@@ -31,7 +31,7 @@ namespace BCITGO_V6.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Email does not exist. Please <a href='/Account/Register'>create an account here</a>.");
+                ModelState.AddModelError(string.Empty, "Email does not exist. Please <a href='/Register/Register'>create an account here</a>.");
                 return Page();
             }
 
@@ -44,11 +44,11 @@ namespace BCITGO_V6.Pages.Account
             var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return RedirectToPage("/Profile/Profile");
+                return RedirectToPage("/AccountHome/UserHome");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid password. <a href='/Account/ForgotPassword'>Reset your password here</a> if you forgot.");
+                ModelState.AddModelError(string.Empty, "Invalid password. <a href='/Register/ForgotPassword'>Reset your password here</a> if you forgot.");
                 return Page();
             }
 

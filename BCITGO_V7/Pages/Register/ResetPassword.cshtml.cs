@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class ResetPasswordModel : PageModel
     {
@@ -23,7 +23,7 @@ namespace BCITGO_V6.Pages.Account
             if (userId == null || token == null)
             {
                 TempData["Error"] = "Invalid password reset link.";
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Register/Login");
             }
 
             Input.UserId = userId;
@@ -43,14 +43,14 @@ namespace BCITGO_V6.Pages.Account
             if (user == null)
             {
                 TempData["Error"] = "User not found.";
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Register/Login");
             }
 
             var result = await _userManager.ResetPasswordAsync(user, Input.Token, Input.Password);
             if (result.Succeeded)
             {
                 TempData["Success"] = "Your password has been reset successfully! Please login.";
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Register/Login");
             }
 
             foreach (var error in result.Errors)

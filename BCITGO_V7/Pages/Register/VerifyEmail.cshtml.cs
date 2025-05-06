@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class VerifyEmailModel : PageModel
     {
@@ -54,7 +54,7 @@ namespace BCITGO_V6.Pages.Account
                 TempData["Error"] = "Email verification failed.";
             }
 
-            return RedirectToPage("/Account/Login");
+            return RedirectToPage("/Register/Login");
         }
     }
 }

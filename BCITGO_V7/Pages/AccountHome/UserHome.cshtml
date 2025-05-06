@@ -1,0 +1,49 @@
+﻿@page "/UserHome"
+@model BCITGO_V6.Pages.AccountHome.UserHomeModel
+@{
+    ViewData["Title"] = "My Account Home";
+    Layout = "_UserLayout";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">🏠 Welcome back, @Model.FullName!</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">🚘 My Rides</h5>
+                    <p class="card-text">View and manage your ride bookings.</p>
+                    <a asp-page="/Rides/MyRides" class="btn btn-outline-primary btn-sm">View Rides</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">🎁 Points & Redemptions</h5>
+                    <p class="card-text">Check your earned points and redeem rewards.</p>
+                    <a asp-page="/Points/MyPoints" class="btn btn-outline-primary btn-sm">View Points</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">🛒 Store</h5>
+                    <p class="card-text">Shop available products and services.</p>
+                    <a asp-page="/Store/Index" class="btn btn-outline-primary btn-sm">Go to Store</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-5 text-center">
+        <a asp-page="/Profile/Profile" class="btn btn-secondary btn-sm">👤 View My Profile</a>
+        <a asp-page="/Account/Logout" class="btn btn-outline-danger btn-sm ms-2">🚪 Logout</a>
+    </div>
+</div>

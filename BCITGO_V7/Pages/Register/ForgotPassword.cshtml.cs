@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class ForgotPasswordModel : PageModel
     {
@@ -44,7 +44,7 @@ namespace BCITGO_V6.Pages.Account
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var resetLink = Url.Page(
-                "/Account/ResetPassword",
+                "/Register/ResetPassword",
                 pageHandler: null,
                 values: new { userId = user.Id, token = token },
                 protocol: Request.Scheme);

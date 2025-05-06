@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace BCITGO_V6.Pages.Account
+namespace BCITGO_V6.Pages.Register
 {
     public class RegisterModel : PageModel
     {
@@ -68,7 +68,7 @@ namespace BCITGO_V6.Pages.Account
                 // Generate email verification token
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var verificationLink = Url.Page(
-                    "/Account/VerifyEmail",
+                    "/Register/VerifyEmail",
                     pageHandler: null,
                     values: new { userId = user.Id, token = token },
                     protocol: Request.Scheme);
@@ -82,7 +82,7 @@ namespace BCITGO_V6.Pages.Account
 
                 // Redirect to Verify page with success message
                 TempData["Success"] = "Account registered successfully! Please check your email to verify your account.";
-                return RedirectToPage("/Account/Verify");
+                return RedirectToPage("/Register/Verify");
             }
             else
             {
