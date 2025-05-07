@@ -1,0 +1,197 @@
+﻿@page
+@model BCITGO_V6.Pages.Rides.PostRideModel
+@{
+    ViewData["Title"] = "Post a Ride";
+    Layout = "_UserLayout";
+}
+
+<!--THIS IS V5 Wizard with progress bar--!>
+
+<style>
+    .wizard-card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    }
+
+    .wizard-step {
+        display: none;
+    }
+
+    .wizard-step.active {
+        display: block;
+    }
+
+    .wizard-buttons {
+        margin-top: 20px;
+    }
+
+    .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .step-indicator div {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 3px solid #ddd;
+        color: #999;
+        font-weight: 500;
+    }
+
+    .step-indicator .active-step {
+        border-color: #0d6efd;
+        color: #0d6efd;
+    }
+
+    .form-check-label {
+        margin-left: 8px;
+    }
+
+</style>
+
+<h3 class="mb-4">Post a Ride</h3>
+
+@if (Model.SuccessMessage != null)
+{
+        <div class="alert alert-success">
+            <h5>Ride posted successfully!</h5>
+            <p>@Model.SuccessMessage</p>
+
+            <a asp-page="/Rides/MyRides" class="btn btn-outline-primary mt-3">Manage My Rides</a>
+            <a asp-page="/Rides/PostRide" class="btn btn-outline-secondary mt-3 ms-2">Post Another Ride</a>
+        </div>
+}
+else
+{
+    <form method="post" class="wizard-card">
+
+        <!-- Step Indicator -->
+    <div class="step-indicator">
+        <div id="stepIndicator1" class="active-step">Step 1: Ride Details</div>
+        <div id="stepIndicator2">Step 2: Pricing</div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="wizard-step active" id="step1">
+
+        <h5 class="mb-3">Ride Details</h5>
+
+        <label>Start Location</label>
+        @* <input id="StartLocation" name="StartLocation" class="form-control mb-3" /> *@
+        <input id="StartLocation" name="StartLocation" class="form-control mb-3" list="StartLocation-list" />
+        <datalist id="StartLocation-list"></datalist>
+        <span asp-validation-for="StartLocation" class="text-danger"></span>
+
+        <label>End Location</label>
+        @* <input id="EndLocation" name="EndLocation" class="form-control mb-3" /> *@
+        <input id="EndLocation" name="EndLocation" class="form-control mb-3" list="EndLocation-list" />
+        <datalist id="EndLocation-list"></datalist>
+        <span asp-validation-for="EndLocation" class="text-danger"></span>
+
+
+        <label>Departure Date</label>
+        <input asp-for="DepartureDate" type="date" class="form-control mb-3" />
+        <span asp-validation-for="DepartureDate" class="text-danger"></span>
+
+        <label>Departure Time</label>
+        <input asp-for="DepartureTime" type="time" class="form-control mb-3" />
+        <span asp-validation-for="DepartureTime" class="text-danger"></span>
+
+        <div class="wizard-buttons text-end">
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
+        </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="wizard-step" id="step2">
+
+        <h5 class="mb-3">Pricing and Preferences</h5>
+
+        <label>Price Per Seat ($)</label>
+        <input asp-for="PricePerSeat" type="number" class="form-control mb-3" />
+        <span asp-validation-for="PricePerSeat" class="text-danger"></span>
+
+        <label>Available Seats</label>
+        <input asp-for="AvailableSeats" type="number" class="form-control mb-3" />
+        <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+
+        <label>Notes (Optional)</label>
+        <textarea asp-for="Notes" class="form-control mb-3"></textarea>
+
+        <div class="form-check form-switch mb-3">
+            <input asp-for="LuggageAllowed" type="checkbox" class="form-check-input" id="luggageAllowed">
+            <label asp-for="LuggageAllowed" class="form-check-label" for="luggageAllowed">Luggage Allowed</label>
+        </div>
+
+        <div class="form-check form-switch mb-3">
+            <input asp-for="PetsAllowed" type="checkbox" class="form-check-input" id="petsAllowed">
+            <label asp-for="PetsAllowed" class="form-check-label" for="petsAllowed">Pets Allowed</label>
+        </div>
+
+        <div class="wizard-buttons d-flex justify-content-between">
+            <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button type="submit" class="btn btn-success">Post Ride</button>
+        </div>
+    </div>
+
+    </form>
+
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Wizard Navigation + OpenStreetMap Autocomplete -->
+    <script>
+        // Wizard Navigation
+        function nextStep() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('stepIndicator1').classList.remove('active-step');
+            document.getElementById('stepIndicator2').classList.add('active-step');
+        }
+
+        function prevStep() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('stepIndicator2').classList.remove('active-step');
+            document.getElementById('stepIndicator1').classList.add('active-step');
+        }
+
+        const TOMTOM_API_KEY = 'ldHWnE8qVeoGaZv9OM50NzBt60HUXsR0'; 
+
+             function setupTomTomAutocomplete(inputId) {
+                 const input = document.getElementById(inputId);
+                 const datalist = document.getElementById(`${inputId}-list`);
+                 let debounceTimer;
+
+                 input.addEventListener('input', () => {
+                     clearTimeout(debounceTimer);
+                     const query = input.value.trim();
+                     if (query.length < 3) return;
+
+                     debounceTimer = setTimeout(() => {
+                         fetch(`https://api.tomtom.com/search/2/autocomplete/${encodeURIComponent(query)}.json?key=${TOMTOM_API_KEY}&limit=5&language=en-US&countrySet=CA&lat=49.2827&lon=-123.1207`)
+                             .then(response => response.json())
+                             .then(data => {
+                                 datalist.innerHTML = "";
+                                 (data.results || []).forEach(place => {
+                                     const option = document.createElement('option');
+                                     option.value = place.address.freeformAddress;
+                                     datalist.appendChild(option);
+                                 });
+                             });
+                     }, 300);
+                 });
+             }
+
+             document.addEventListener('DOMContentLoaded', () => {
+                 setupTomTomAutocomplete('StartLocation');
+                 setupTomTomAutocomplete('EndLocation');
+             });
+    </script>
+}

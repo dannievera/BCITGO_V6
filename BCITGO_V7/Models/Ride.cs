@@ -18,8 +18,8 @@ namespace BCITGO_V6.Models
         public decimal PricePerSeat { get; set; }
         public int AvailableSeats { get; set; }
         public string? Notes { get; set; }
-        public bool? LuggageAllowed { get; set; }
-        public bool? PetsAllowed { get; set; }
+        public bool LuggageAllowed { get; set; }
+        public bool PetsAllowed { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
 

@@ -1,0 +1,31 @@
+﻿@page "{id:int}"
+@model BCITGO_V6.Pages.Rides.ViewRideModel
+@{
+    ViewData["Title"] = "Ride Details";
+    Layout = "_UserLayout";
+}
+
+<h3>Ride Details</h3>
+
+@if (Model.Ride != null)
+{
+    <div class="card p-4 shadow-sm">
+        <h4>@Model.Ride.StartLocation → @Model.Ride.EndLocation</h4>
+        <p><strong>Departure Date:</strong> @Model.Ride.DepartureDate.ToString("yyyy-MM-dd")</p>
+        <p><strong>Departure Time:</strong> @Model.Ride.DepartureTime</p>
+        <p><strong>Price per Seat:</strong> $@Model.Ride.PricePerSeat</p>
+        <p><strong>Available Seats:</strong> @Model.Ride.AvailableSeats</p>
+        <p><strong>Trip Notes:</strong> @(string.IsNullOrWhiteSpace(Model.Ride.Notes) ? "-" : Model.Ride.Notes)</p>
+        <p><strong>Luggage Allowed:</strong> @(Model.Ride.LuggageAllowed == true ? "Yes" : "No")</p>
+        <p><strong>Pets Allowed:</strong> @(Model.Ride.PetsAllowed == true ? "Yes" : "No")</p>
+
+        <div class="mt-3">
+            <a href="#" class="btn btn-success">Book This Ride</a>
+            <a asp-page="/Rides/MyRides" class="btn btn-secondary">Back to Rides</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">Ride not found.</div>
+}

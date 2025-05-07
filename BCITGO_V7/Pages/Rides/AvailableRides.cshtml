@@ -1,0 +1,47 @@
+﻿@page
+@model BCITGO_V6.Pages.Rides.AvailableRidesModel
+@{
+    ViewData["Title"] = "Available Rides";
+    Layout = "_UserLayout";
+}
+
+<h3>Available Rides</h3>
+
+@if (Model.Rides.Count == 0)
+{
+    <div class="alert alert-info">
+        No rides available right now. Please check back later!
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Departure</th>
+                <th>Time</th>
+                <th>Seats</th>
+                <th>Price/Seat</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ride in Model.Rides)
+            {
+                <tr>
+                    <td>@ride.StartLocation</td>
+                    <td>@ride.EndLocation</td>
+                    <td>@ride.DepartureDate.ToString("yyyy-MM-dd")</td>
+                    <td>@ride.DepartureTime</td>
+                    <td>@ride.AvailableSeats</td>
+                    <td>$@ride.PricePerSeat</td>
+                    <td>
+                        <a asp-page="/Rides/ViewRide" asp-route-id="@ride.RideId" class="btn btn-primary btn-sm">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

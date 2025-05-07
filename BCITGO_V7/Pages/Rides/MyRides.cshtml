@@ -1,0 +1,48 @@
+﻿@page
+@model BCITGO_V6.Pages.Rides.MyRidesModel
+@{
+    ViewData["Title"] = "My Rides";
+    Layout = "_UserLayout";
+}
+
+<h3>My Rides</h3>
+
+<!-- POST RIDE BUTTON HERE -->
+<a asp-page="/Rides/PostRide" class="btn btn-success btn-sm mb-3">Post a New Ride</a>
+
+@if (!Model.UserRides.Any())
+{
+    <div class="alert alert-info">You have no rides posted yet.</div>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Departure</th>
+                <th>Price/Seat</th>
+                <th>Seats</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ride in Model.UserRides)
+            {
+                <tr>
+                    <td>@ride.StartLocation</td>
+                    <td>@ride.EndLocation</td>
+                    <td>@ride.DepartureDate.ToString("yyyy-MM-dd") @ride.DepartureTime</td>
+                    <td>$@ride.PricePerSeat</td>
+                    <td>@ride.AvailableSeats</td>
+                    <td>@ride.Status</td>
+                    <td>
+                        <a asp-page="/Rides/EditRide" asp-route-id="@ride.RideId" class="btn btn-sm btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

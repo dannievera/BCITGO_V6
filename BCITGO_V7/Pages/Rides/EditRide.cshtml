@@ -1,0 +1,58 @@
+﻿@page "{id:int}"
+@model BCITGO_V6.Pages.Rides.EditRideModel
+@{
+    ViewData["Title"] = "Edit Ride";
+    Layout = "_UserLayout";
+}
+
+<h3>Edit Ride</h3>
+
+@if (Model.SuccessMessage != null)
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<form method="post" class="text-start">
+
+    <input type="hidden" asp-for="Ride.RideId" />
+
+    <label>Start Location</label>
+    <input asp-for="Ride.StartLocation" class="form-control" />
+
+    <label>End Location</label>
+    <input asp-for="Ride.EndLocation" class="form-control" />
+
+    <label>Departure Date</label>
+    <input asp-for="Ride.DepartureDate" type="date" class="form-control" />
+
+    <label>Departure Time</label>
+    <input asp-for="Ride.DepartureTime" type="time" class="form-control" />
+
+    <label>Price Per Seat ($)</label>
+    <input asp-for="Ride.PricePerSeat" type="number" class="form-control" />
+
+    <label>Available Seats</label>
+    <input asp-for="Ride.AvailableSeats" type="number" class="form-control" />
+
+    <label>Notes</label>
+    <textarea asp-for="Ride.Notes" class="form-control"></textarea>
+
+    <label>Luggage Allowed</label>
+    <input asp-for="Ride.LuggageAllowed" type="checkbox" class="form-check-input" />
+
+    <label>Pets Allowed</label>
+    <input asp-for="Ride.PetsAllowed" type="checkbox" class="form-check-input" />
+
+    <button type="submit" name="action" value="save" class="btn btn-primary mt-3">Save Changes</button>
+    <button type="submit" name="action" value="delete" class="btn btn-danger mt-3">Delete Ride</button>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

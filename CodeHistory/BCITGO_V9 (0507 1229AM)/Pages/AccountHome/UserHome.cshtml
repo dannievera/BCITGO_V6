@@ -1,0 +1,60 @@
+﻿@page "/UserHome"
+@model BCITGO_V6.Pages.AccountHome.UserHomeModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_UserLayout";
+}
+
+@functions {
+    public class StatItem
+    {
+        public string Title { get; set; }
+        public string Value { get; set; }
+        public string StatusClass { get; set; }
+    }
+
+    List<StatItem> stats = new List<StatItem> {
+        new StatItem { Title = "Total Rides Taken", Value = "12", StatusClass = "" },
+        new StatItem { Title = "Points Earned", Value = "680", StatusClass = "" },
+        new StatItem { Title = "Redemptions", Value = "5", StatusClass = "" },
+        new StatItem { Title = "Profile Status", Value = "Verified", StatusClass = "badge bg-success rounded-pill" }
+    };
+}
+
+<div class="container">
+    <h2 class="mb-4">Welcome back, @Model.FullName!</h2>
+
+    <!-- Stats -->
+    <div class="row g-4 mb-5">
+        @foreach (var stat in stats)
+        {
+            <div class="col-md-3">
+                <div class="card border-0 text-center rounded-4 p-3">
+                    <div class="card-body">
+                        <h6 class="text-muted">@stat.Title</h6>
+                        @if (!string.IsNullOrEmpty(stat.StatusClass))
+                        {
+                            <h3><span class="@stat.StatusClass">@stat.Value</span></h3>
+                        }
+                        else
+                        {
+                            <h3>@stat.Value</h3>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Recent Activity -->
+    <h4 class="mb-3 text-uppercase text-muted small">Recent Activity</h4>
+    <ul class="list-group mb-5">
+        <li class="list-group-item"><i class="bi bi-car-front"></i> Ride to Burnaby → Completed → <a asp-page="/Rides/MyRides">View</a></li>
+        <li class="list-group-item"><i class="bi bi-gift"></i> Redeemed Starbucks Gift Card → 2 Days ago → <a asp-page="/Points/MyPoints">View</a></li>
+    </ul>
+
+    <!-- Quick Actions -->
+    <h4 class="mb-3 text-uppercase text-muted small">Quick Actions</h4>
+    <a asp-page="/Rides/MyRides" class="btn btn-outline-primary btn-rounded px-4 py-2 fw-semibold">Book a Ride</a>
+    <a asp-page="/Points/MyPoints" class="btn btn-outline-success btn-rounded ms-2 px-4 py-2 fw-semibold">Redeem Points</a>
+</div>

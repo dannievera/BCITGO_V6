@@ -97,54 +97,76 @@
                 font-size: 1.2rem; /* slightly bigger icons */
             }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+/*         .body-wrapper {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex: 1;
+        } */
+
+        .body-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1; /* This will push footer to bottom if content is short */
+            padding: 40px;
+        }
 
 
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg shadow-sm">
-        <div class="container-fluid">
+    <div class="body-wrapper">
 
-            <a class="navbar-brand fw-bold fs-3" href="/UserHome" style="letter-spacing: 0.5px;">
-                BCIT GO
-            </a>
+        <!-- NAVBAR (keep only this one inside body-wrapper) -->
+        <nav class="navbar navbar-expand-lg shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold fs-3" asp-page="/AccountHome/UserHome" style="letter-spacing: 0.5px;">
+                    BCIT GO
+                </a>
 
-
-
-            <div class="d-flex align-items-center">
-                <a asp-page="/Profile/Profile" class="nav-link me-3"><i class="bi bi-person-circle"></i> My Profile</a>
-                <a asp-page="/Index" class="nav-link me-3"><i class="bi bi-box-arrow-right"></i> Logout</a>
-
-                <!-- Hamburger Menu (hover enabled) -->
-                <div class="dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button">
-                        <i class="bi bi-list fs-4"></i>
-
-                    </a>
-                    <ul class="dropdown-menu shadow">
-                        <li><a class="dropdown-item py-2" asp-page="/Rides/MyRides"><i class="bi bi-car-front"></i> My Rides</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2" asp-page="/Points/MyPoints"><i class="bi bi-gift"></i> Points</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2" asp-page="/Index"><i class="bi bi-bag"></i> Store</a></li>
-                    </ul>
-
+                <div class="d-flex align-items-center">
+                    <a asp-page="/Profile/Profile" class="nav-link me-3"><i class="bi bi-person-circle"></i> My Profile</a>
+                    <a asp-page="/Index" class="nav-link me-3"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"><i class="bi bi-list fs-4"></i></a>
+                        <ul class="dropdown-menu shadow">
+                            <li><a class="dropdown-item py-2" asp-page="/Rides/MyRides"><i class="bi bi-car-front"></i> My Rides</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2" asp-page="/Points/MyPoints"><i class="bi bi-gift"></i> Points</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2" asp-page="/Index"><i class="bi bi-bag"></i> Store</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+        </nav>
+
+        <div class="content container">
+            @RenderBody()
         </div>
-    </nav>
 
-    <div class="content container">
-        @RenderBody()
+        <footer>
+            &copy; 2025 BCIT GO - Connected Rides & Community
+        </footer>
+
     </div>
-
-    <footer>
-        &copy; 2025 BCIT GO - Connected Rides & Community
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>
