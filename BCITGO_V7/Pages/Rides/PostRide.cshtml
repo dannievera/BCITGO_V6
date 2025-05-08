@@ -5,7 +5,7 @@
     Layout = "_UserLayout";
 }
 
-<!--THIS IS V5 Wizard with progress bar--!>
+@* THIS IS V5 Wizard with progress bar *@
 
 <style>
     .wizard-card {
@@ -51,6 +51,38 @@
         margin-left: 8px;
     }
 
+    .input-error:empty {
+        display: none;
+    }
+
+    .input-error {
+        background-color: #fff5f5;
+        border: 1px solid #ffcccc;
+        padding: 10px;
+        border-radius: 6px;
+        color: #cc0000;
+        font-size: 0.875rem;
+        margin-top: 5px;
+        display: block; /* ensure block when has content */
+    }
+
+
+    .validation-summary-errors ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .validation-summary-errors li {
+        background-color: #fff5f5;
+        border: 1px solid #ffcccc;
+        padding: 10px;
+        border-radius: 6px;
+        color: #cc0000;
+        margin-bottom: 5px;
+        font-size: 0.875rem;
+    }
+
+
 </style>
 
 <h3 class="mb-4">Post a Ride</h3>
@@ -69,6 +101,9 @@ else
 {
     <form method="post" class="wizard-card">
 
+        <!-- GLOBAL VALIDATION -->
+        <div asp-validation-summary="All" class="validation-summary-errors"></div>
+
         <!-- Step Indicator -->
     <div class="step-indicator">
         <div id="stepIndicator1" class="active-step">Step 1: Ride Details</div>
@@ -81,25 +116,27 @@ else
         <h5 class="mb-3">Ride Details</h5>
 
         <label>Start Location</label>
-        @* <input id="StartLocation" name="StartLocation" class="form-control mb-3" /> *@
-        <input id="StartLocation" name="StartLocation" class="form-control mb-3" list="StartLocation-list" />
+        <input id="StartLocation" name="StartLocation" class="form-control mb-3" list="StartLocation-list" placeholder="Start typing your address (e.g. 4700 Kingsway, Burnaby)" />
         <datalist id="StartLocation-list"></datalist>
-        <span asp-validation-for="StartLocation" class="text-danger"></span>
+        <span asp-validation-for="StartLocation" class="input-error"></span>
 
         <label>End Location</label>
-        @* <input id="EndLocation" name="EndLocation" class="form-control mb-3" /> *@
-        <input id="EndLocation" name="EndLocation" class="form-control mb-3" list="EndLocation-list" />
+        <input id="EndLocation" name="EndLocation" class="form-control mb-3" list="EndLocation-list" placeholder="Start typing destination address (e.g. BCIT Burnaby)" />
         <datalist id="EndLocation-list"></datalist>
-        <span asp-validation-for="EndLocation" class="text-danger"></span>
+            <span asp-validation-for="EndLocation" class="input-error"></span>
+
 
 
         <label>Departure Date</label>
-        <input asp-for="DepartureDate" type="date" class="form-control mb-3" />
-        <span asp-validation-for="DepartureDate" class="text-danger"></span>
+        @* <input asp-for="DepartureDate" type="date" class="form-control mb-3" /> *@
+        <input asp-for="DepartureDate" type="date" class="form-control mb-3" onclick="this.showPicker()" />
+            <span asp-validation-for="DepartureDate" class="input-error"></span>
 
         <label>Departure Time</label>
-        <input asp-for="DepartureTime" type="time" class="form-control mb-3" />
-        <span asp-validation-for="DepartureTime" class="text-danger"></span>
+            <label>Departure Time</label>
+            <input asp-for="DepartureTime" type="time" class="form-control mb-3" onclick="this.showPicker()" />
+            <span asp-validation-for="DepartureTime" class="input-error"></span>
+
 
         <div class="wizard-buttons text-end">
             <button type="button" class="btn btn-primary" onclick="nextStep()">Next</button>
@@ -113,11 +150,11 @@ else
 
         <label>Price Per Seat ($)</label>
         <input asp-for="PricePerSeat" type="number" class="form-control mb-3" />
-        <span asp-validation-for="PricePerSeat" class="text-danger"></span>
+            <span asp-validation-for="PricePerSeat" class="input-error"></span>
 
         <label>Available Seats</label>
         <input asp-for="AvailableSeats" type="number" class="form-control mb-3" />
-        <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+            <span asp-validation-for="AvailableSeats" class="input-error"></span>
 
         <label>Notes (Optional)</label>
         <textarea asp-for="Notes" class="form-control mb-3"></textarea>

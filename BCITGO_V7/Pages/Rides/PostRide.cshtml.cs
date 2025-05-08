@@ -48,7 +48,13 @@ namespace BCITGO_V6.Pages.Rides
 
         public void OnGet()
         {
+            // Set default DepartureDate to today only if not already set
+            if (DepartureDate == default(DateTime))
+            {
+                DepartureDate = DateTime.Today;
+            }
         }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -74,12 +80,22 @@ namespace BCITGO_V6.Pages.Rides
                 return Page();
             }
 
+            // Validate Departure Date and Time
+            var rideDateTime = DepartureDate.Date + DepartureTime;
+
+            if (rideDateTime <= DateTime.Now)
+            {
+                ModelState.AddModelError("DepartureDate", "Please select a departure date and time that is later than now.");
+                return Page();
+            }
+
             // Extra validation (for empty input or only whitespace)
             if (string.IsNullOrWhiteSpace(StartLocation) || string.IsNullOrWhiteSpace(EndLocation))
             {
                 ErrorMessage = "Start Location and End Location cannot be empty.";
                 return Page();
             }
+
 
             // Clean up (remove trailing/leading spaces, trim)
             StartLocation = StartLocation.Trim();
