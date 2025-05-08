@@ -1,47 +1,107 @@
 ﻿@page
 @model BCITGO_V6.Pages.Rides.AvailableRidesModel
 @{
-    ViewData["Title"] = "Available Rides";
+    ViewData["Title"] = "Find Available Rides";
     Layout = "_UserLayout";
 }
 
-<h3>Available Rides</h3>
+<h3 class="mb-4 fw-semibold">Find a Ride</h3>
 
-@if (Model.Rides.Count == 0)
+<!-- Filter Card -->
+<div class="card p-4 shadow-sm border-0 mb-5">
+    <h5 class="mb-4 fw-semibold">Search Filters</h5>
+
+    <form method="get">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Start Location</label>
+                <input type="text" name="StartLocation" value="@Model.Filter.StartLocation" class="form-control" placeholder="Enter start location">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">End Location</label>
+                <input type="text" name="EndLocation" value="@Model.Filter.EndLocation" class="form-control" placeholder="Enter end location">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Departure Date</label>
+                <input type="date" name="DepartureDate" value="@Model.Filter.DepartureDate?.ToString("yyyy-MM-dd")" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" onclick="this.showPicker()">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Min Price</label>
+                <input type="number" name="MinPrice" value="@Model.Filter.MinPrice" class="form-control" placeholder="Min $">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Max Price</label>
+                <input type="number" name="MaxPrice" value="@Model.Filter.MaxPrice" class="form-control" placeholder="Max $">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Seats Needed</label>
+                <input type="number" name="SeatsNeeded" value="@Model.Filter.SeatsNeeded" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Sort By</label>
+                <select name="SortBy" class="form-select">
+                    <option value="">Default</option>
+                    <option value="price" selected="@(Model.Filter.SortBy == "price")">Price (Low to High)</option>
+                    <option value="earliest" selected="@(Model.Filter.SortBy == "earliest")">Earliest Departure</option>
+                </select>
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Rides List -->
+@if (!Model.Rides.Any())
 {
-    <div class="alert alert-info">
-        No rides available right now. Please check back later!
+    <div class="alert alert-secondary text-center p-4 border-0 shadow-sm">
+        No rides found. Please adjust your search criteria.
     </div>
 }
 else
 {
-    <table class="table table-bordered table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>Start</th>
-                <th>End</th>
-                <th>Departure</th>
-                <th>Time</th>
-                <th>Seats</th>
-                <th>Price/Seat</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ride in Model.Rides)
-            {
-                <tr>
-                    <td>@ride.StartLocation</td>
-                    <td>@ride.EndLocation</td>
-                    <td>@ride.DepartureDate.ToString("yyyy-MM-dd")</td>
-                    <td>@ride.DepartureTime</td>
-                    <td>@ride.AvailableSeats</td>
-                    <td>$@ride.PricePerSeat</td>
-                    <td>
-                        <a asp-page="/Rides/ViewRide" asp-route-id="@ride.RideId" class="btn btn-primary btn-sm">View</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Driver</th>
+                        <th>From → To</th>
+                        <th>Departure</th>
+                        <th>Price / Seat</th>
+                        <th>Available Seats</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ride in Model.Rides)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@ride.User.FullName</td>
+                            <td>@ride.StartLocation → @ride.EndLocation</td>
+                            <td>@ride.DepartureDate.ToString("yyyy-MM-dd") @ride.DepartureTime</td>
+                            <td>$@ride.PricePerSeat</td>
+                            <td>
+                                <span class="badge bg-success">@(@ride.AvailableSeats - ride.BookedSeats)</span>
+                            </td>
+                            <td>
+                            <td>
+                                <a asp-page="/Book/ViewDriverRidePosting" asp-route-id="@ride.RideId" class="btn btn-outline-primary btn-sm me-2">View Details</a>
+                                <a asp-page="/Book/BookRide" asp-route-id="@ride.RideId" class="btn btn-primary btn-sm">Book Now</a>
+                            </td>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }

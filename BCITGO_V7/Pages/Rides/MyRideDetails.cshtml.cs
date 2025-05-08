@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BCITGO_V6.Data;
@@ -44,5 +44,36 @@ namespace BCITGO_V6.Pages.Rides
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostConfirmAsync(int id)
+        {
+            var booking = _context.Booking.FirstOrDefault(b => b.BookingId == id);
+
+            if (booking != null && booking.Status == "Pending")
+            {
+                booking.Status = "Confirmed";
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage(new { id = booking.RideId });
+        }
+
+        public async Task<IActionResult> OnPostDeclineAsync(int id)
+        {
+            var booking = _context.Booking
+                .Include(b => b.Ride)
+                .FirstOrDefault(b => b.BookingId == id);
+
+            if (booking != null && booking.Status == "Pending")
+            {
+                booking.Status = "Declined"; // ✅ Just Decline, no need to adjust seats anymore
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage(new { id = booking.RideId });
+        }
+
+
+
     }
 }

@@ -71,15 +71,36 @@ else
                     <td>@(string.IsNullOrWhiteSpace(booking.BookingMessage) ? "-" : booking.BookingMessage)</td>
                     <td>@booking.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
                     <td>
-                        @if (booking.Status == "Cancelled")
-                        {
-                            <span class="badge bg-secondary">Cancelled</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-primary">Confirmed</span>
-                        }
+                        <div class="d-flex align-items-center gap-2">
+                            @if (booking.Status == "Pending")
+                            {
+                                <span class="badge bg-warning text-dark">Pending</span>
+
+                                <form method="post" asp-page-handler="Confirm" asp-route-id="@booking.BookingId" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Confirm</button>
+                                </form>
+
+                                <form method="post" asp-page-handler="Decline" asp-route-id="@booking.BookingId" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Decline</button>
+                                </form>
+                            }
+                            else if (booking.Status == "Confirmed")
+                            {
+                                <span class="badge bg-primary">Confirmed</span>
+                            }
+                            else if (booking.Status == "Declined")
+                            {
+                                <span class="badge bg-secondary">Declined</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Cancelled</span>
+                            }
+                        </div>
                     </td>
+
+
+
                 </tr>
             }
         </tbody>

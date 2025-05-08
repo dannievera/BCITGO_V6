@@ -27,8 +27,10 @@ namespace BCITGO_V6.Pages.Profile
         public string FullName { get; set; }
 
         [BindProperty]
-        [RegularExpression(@"^(\d{10})?$", ErrorMessage = "Phone number must be 10 digits.")]
-        public string? PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Phone number is required.")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
+        public string PhoneNumber { get; set; }
+
 
         [BindProperty]
         [StringLength(300, ErrorMessage = "About Me can be max 300 characters.")]

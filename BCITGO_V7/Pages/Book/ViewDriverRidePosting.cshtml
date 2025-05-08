@@ -1,4 +1,42 @@
-﻿@page
+﻿@page "{id:int}"
 @model BCITGO_V6.Pages.Book.ViewDriverRidePostingModel
 @{
+    ViewData["Title"] = "Ride Details";
+    Layout = "_UserLayout";
 }
+
+<h3 class="mb-4 fw-semibold">Ride Details</h3>
+
+<div class="card p-4 shadow-sm border-0 mb-4">
+    <h5 class="fw-semibold mb-4">Driver Information</h5>
+
+    <div class="d-flex align-items-center mb-3">
+        @* <img src="@Model.DriverProfilePictureUrl" alt="Profile Picture" class="rounded-circle me-3" width="60" height="60" /> *@
+        <img src="@Model.DriverProfilePictureUrl" alt="Profile Picture" class="rounded-circle me-3 object-fit-cover border shadow-sm" width="60" height="60" style="object-fit: cover;" />
+
+        <div>
+            <h6 class="mb-0 fw-semibold">@Model.Ride.User.FullName</h6>
+            <small class="text-muted">Driver</small>
+        </div>
+    </div>
+
+    @* Driver Rating - Optional *@
+    <p><strong>Driver Rating:</strong> N/A (Rating system not yet implemented)</p>
+</div>
+
+<div class="card p-4 shadow-sm border-0 mb-4">
+    <h5 class="fw-semibold mb-4">Ride Information</h5>
+
+    <p><strong>From:</strong> @Model.Ride.StartLocation</p>
+    <p><strong>To:</strong> @Model.Ride.EndLocation</p>
+    <p><strong>Departure:</strong> @Model.Ride.DepartureDate.ToString("yyyy-MM-dd") @Model.Ride.DepartureTime</p>
+    <p><strong>Price per Seat:</strong> $@Model.Ride.PricePerSeat</p>
+    <p><strong>Seats Remaining:</strong> @(@Model.Ride.AvailableSeats - @Model.Ride.BookedSeats)</p>
+    <p><strong>Trip Notes:</strong> @(string.IsNullOrEmpty(Model.Ride.Notes) ? "No additional notes." : Model.Ride.Notes)</p>
+    <p><strong>Luggage Allowed:</strong> @(Model.Ride.LuggageAllowed ? "Yes" : "No")</p>
+    <p><strong>Pets Allowed:</strong> @(Model.Ride.PetsAllowed ? "Yes" : "No")</p>
+</div>
+
+<div class="d-flex justify-content-end mt-4">
+    <a asp-page="/Book/BookRide" asp-route-id="@Model.Ride.RideId" class="btn btn-primary px-4 py-2 fw-semibold">Book Now</a>
+</div>

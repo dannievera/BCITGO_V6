@@ -1,4 +1,81 @@
 ﻿@page
 @model BCITGO_V6.Pages.Book.MyBookingsModel
 @{
+    ViewData["Title"] = "My Bookings";
+    Layout = "_UserLayout";
+}
+
+<h3 class="mb-4 fw-semibold">My Bookings</h3>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success text-center fw-semibold mb-4">@Model.SuccessMessage</div>
+}
+
+
+@if (!Model.Bookings.Any())
+{
+    <div class="alert alert-info">You have no bookings yet.</div>
+}
+else
+{
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>From → To</th>
+                        <th>Departure</th>
+                        <th>Driver</th>
+                        <th>Seats Booked</th>
+                        <th>Status</th>
+                        <th>Booked At</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model.Bookings)
+                    {
+                        var statusBadge = booking.Status switch
+                        {
+                            "Pending" => "bg-warning text-dark",
+                            "Confirmed" => "bg-success",
+                            "Declined" => "bg-danger",
+                            "Cancelled" => "bg-secondary",
+                            _ => "bg-light text-dark"
+                        };
+
+
+                        <tr>
+                            <td>@booking.Ride.StartLocation → @booking.Ride.EndLocation</td>
+                            <td>@booking.Ride.DepartureDate.ToString("yyyy-MM-dd") @booking.Ride.DepartureTime</td>
+                            <td>@booking.Ride.User.FullName</td>
+                            <td><span class="badge bg-primary">@booking.SeatsBooked</span></td>
+                            <td>
+                                @* <span class="badge @(booking.Status == "Confirmed" ? "bg-primary" : booking.Status == "Cancelled" ? "bg-secondary" : "bg-warning text-dark")">
+                                    @booking.Status
+                                </span> *@
+
+                                <span class="badge @statusBadge">
+                                    @booking.Status
+                                </span>
+
+
+                                @if (booking.Status != "Cancelled" && booking.Status != "Completed" && booking.Status != "Declined")
+                                {
+                                    <form method="post" asp-page-handler="Cancel" asp-route-id="@booking.BookingId" class="d-inline mt-2">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel Booking</button>
+                                    </form>
+                                }
+
+                            </td>
+
+                            <td>@booking.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }

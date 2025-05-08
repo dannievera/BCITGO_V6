@@ -99,7 +99,7 @@ namespace BCITGO_V6.Data
                     DepartureDate = DateTime.Today.AddDays(1),
                     DepartureTime = new TimeSpan(8, 30, 0),
                     PricePerSeat = 15,
-                    AvailableSeats = 3,
+                    //AvailableSeats = 3,
                     Notes = "No heavy luggage please.",
                     LuggageAllowed = true,
                     PetsAllowed = false,

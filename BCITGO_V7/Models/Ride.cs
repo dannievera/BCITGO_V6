@@ -16,7 +16,11 @@ namespace BCITGO_V6.Models
         public DateTime DepartureDate { get; set; }
         public TimeSpan DepartureTime { get; set; }
         public decimal PricePerSeat { get; set; }
-        public int AvailableSeats { get; set; }
+        public int TotalSeats { get; set; } 
+
+        [NotMapped]
+        public int AvailableSeats => TotalSeats - BookedSeats; 
+
         public string? Notes { get; set; }
         public bool LuggageAllowed { get; set; }
         public bool PetsAllowed { get; set; }
@@ -24,12 +28,18 @@ namespace BCITGO_V6.Models
         [NotMapped]
         public int BookedSeats { get; set; }
 
+        [NotMapped]
+        public int PendingRequests { get; set; }
+
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
 
         // Navigation
         [ForeignKey("UserId")]
         public int UserId { get; set; }
+        public User User { get; set; }
+
+
 
         public ICollection<Booking>? Bookings { get; set; }
         public ICollection<Review>? Reviews { get; set; }

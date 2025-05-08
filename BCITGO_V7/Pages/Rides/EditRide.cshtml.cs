@@ -61,7 +61,7 @@ namespace BCITGO_V6.Pages.Rides
             ride.DepartureDate = Ride.DepartureDate;
             ride.DepartureTime = Ride.DepartureTime;
             ride.PricePerSeat = Ride.PricePerSeat;
-            ride.AvailableSeats = Ride.AvailableSeats;
+            ride.TotalSeats = Ride.TotalSeats;
             ride.Notes = Ride.Notes;
             ride.LuggageAllowed = Ride.LuggageAllowed;
             ride.PetsAllowed = Ride.PetsAllowed;

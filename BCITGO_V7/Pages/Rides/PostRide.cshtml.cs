@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using BCITGO_V6.Data;
@@ -32,7 +32,7 @@ namespace BCITGO_V6.Pages.Rides
         public decimal PricePerSeat { get; set; }
 
         [BindProperty, Required, Range(1, 8)]
-        public int AvailableSeats { get; set; }
+        public int TotalSeats { get; set; }
 
         [BindProperty]
         public string? Notes { get; set; }
@@ -120,7 +120,7 @@ namespace BCITGO_V6.Pages.Rides
                 DepartureDate = DepartureDate,
                 DepartureTime = DepartureTime,
                 PricePerSeat = PricePerSeat,
-                AvailableSeats = AvailableSeats,
+                TotalSeats = TotalSeats, //
                 Notes = Notes,
                 LuggageAllowed = LuggageAllowed,
                 PetsAllowed = PetsAllowed,
@@ -128,6 +128,7 @@ namespace BCITGO_V6.Pages.Rides
                 UserId = user.UserId,
                 Status = "Active"
             };
+
 
             _context.Ride.Add(ride);
             await _context.SaveChangesAsync();

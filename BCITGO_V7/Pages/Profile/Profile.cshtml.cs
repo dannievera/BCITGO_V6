@@ -49,6 +49,11 @@ namespace BCITGO_V6.Pages.Profile
             Status = appUser.Status;
             CreatedAt = appUser.CreatedAt;
             LastActiveAt = appUser.LastActiveAt;
+            ProfilePicture = string.IsNullOrEmpty(appUser.ProfilePicture)
+                ? "/images/default-profile.png"
+                : appUser.ProfilePicture;
+
+
 
             return Page();
         }
