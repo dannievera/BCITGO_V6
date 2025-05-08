@@ -1,0 +1,87 @@
+﻿@page "{id:int}"
+@model BCITGO_V6.Pages.Rides.MyRideDetailsModel
+@{
+    ViewData["Title"] = "Ride Details";
+    Layout = "_UserLayout";
+}
+
+<h3 class="mb-4">Ride Details</h3>
+
+<!-- Ride Info Card -->
+<div class="card p-4 shadow-sm mb-5">
+    <h5 class="mb-3">Ride Information</h5>
+
+    <div class="row mb-2">
+        <div class="col-md-6"><strong>From:</strong> @Model.Ride.StartLocation</div>
+        <div class="col-md-6"><strong>To:</strong> @Model.Ride.EndLocation</div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6"><strong>Departure Date:</strong> @Model.Ride.DepartureDate.ToString("yyyy-MM-dd")</div>
+        <div class="col-md-6"><strong>Departure Time:</strong> @Model.Ride.DepartureTime</div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6"><strong>Price per Seat:</strong> $@Model.Ride.PricePerSeat</div>
+        <div class="col-md-6"><strong>Available Seats:</strong> @Model.Ride.AvailableSeats</div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6"><strong>Notes:</strong> @(string.IsNullOrWhiteSpace(Model.Ride.Notes) ? "None" : Model.Ride.Notes)</div>
+        <div class="col-md-6"><strong>Status:</strong> <span class="badge bg-primary">@Model.Ride.Status</span></div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6"><strong>Luggage Allowed:</strong> @(Model.Ride.LuggageAllowed ? "Yes" : "No")</div>
+        <div class="col-md-6"><strong>Pets Allowed:</strong> @(Model.Ride.PetsAllowed ? "Yes" : "No")</div>
+    </div>
+</div>
+
+<h5 class="mb-3">Booked Passengers</h5>
+
+@if (!Model.Bookings.Any())
+{
+    <div class="alert alert-info">No bookings yet for this ride.</div>
+}
+else
+{
+    <table class="table table-hover table-bordered shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Passenger</th>
+                <th>Seats Booked</th>
+                <th>Booking Message</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                var rowClass = booking.Status == "Cancelled" ? "text-muted bg-light" : "";
+
+                <tr class="@rowClass">
+                    <td class="d-flex align-items-center">
+@*                         <img src="@booking.User.ProfilePictureUrl" alt="Profile" class="rounded-circle me-2" style="width:40px; height:40px; object-fit:cover;"> *@
+                        <a asp-page="/Profile/ViewProfile" asp-route-id="@booking.UserId" class="fw-bold text-decoration-none">@booking.User.FullName</a>
+                    </td>
+                    <td>
+                        <span class="badge bg-success">@booking.SeatsBooked</span>
+                    </td>
+                    <td>@(string.IsNullOrWhiteSpace(booking.BookingMessage) ? "-" : booking.BookingMessage)</td>
+                    <td>@booking.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        @if (booking.Status == "Cancelled")
+                        {
+                            <span class="badge bg-secondary">Cancelled</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary">Confirmed</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

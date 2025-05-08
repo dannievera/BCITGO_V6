@@ -8,9 +8,6 @@ namespace BCITGO_V6.Models
     {
         [Key]
         public int BookingId { get; set; }
-
-
-
         public int SeatsBooked { get; set; }
         public string? BookingMessage { get; set; }
         public string Status { get; set; } = string.Empty;
@@ -19,8 +16,10 @@ namespace BCITGO_V6.Models
         // Navigation
         [ForeignKey("RideId")]
         public int RideId { get; set; }
+        public Ride Ride { get; set; }   // Navigation property
 
         [ForeignKey("UserId")]
         public int UserId { get; set; }
+        public User User { get; set; }   // Navigation property
     }
 }

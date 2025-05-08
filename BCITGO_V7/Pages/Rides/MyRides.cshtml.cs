@@ -30,11 +30,36 @@ namespace BCITGO_V6.Pages.Rides
                     .Where(r => r.UserId == user.UserId && r.Status != "Deleted")
                     .OrderByDescending(r => r.CreatedAt)
                     .ToList();
+
+                // Calculate booked seats for each ride
+                foreach (var ride in UserRides)
+                {
+                    ride.BookedSeats = _context.Booking
+                        .Where(b => b.RideId == ride.RideId && b.Status != "Cancelled")
+                        .Sum(b => (int?)b.SeatsBooked) ?? 0;
+                }
             }
             else
             {
                 UserRides = new List<Ride>();
             }
         }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var ride = _context.Ride.FirstOrDefault(r => r.RideId == id);
+
+            if (ride == null)
+            {
+                return NotFound();
+            }
+
+            ride.Status = "Deleted";
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(); // refresh MyRides page after delete
+        }
+
     }
 }
+

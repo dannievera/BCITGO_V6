@@ -7,7 +7,6 @@
 
 <h3>My Rides</h3>
 
-<!-- POST RIDE BUTTON HERE -->
 <a asp-page="/Rides/PostRide" class="btn btn-success btn-sm mb-3">Post a New Ride</a>
 
 @if (!Model.UserRides.Any())
@@ -23,7 +22,8 @@ else
                 <th>End</th>
                 <th>Departure</th>
                 <th>Price/Seat</th>
-                <th>Seats</th>
+                <th>Total Seats</th>
+                <th>Booked Seats</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
@@ -37,9 +37,16 @@ else
                     <td>@ride.DepartureDate.ToString("yyyy-MM-dd") @ride.DepartureTime</td>
                     <td>$@ride.PricePerSeat</td>
                     <td>@ride.AvailableSeats</td>
+                    <td>@ride.BookedSeats</td>
                     <td>@ride.Status</td>
                     <td>
+                        <a asp-page="/Rides/MyRideDetails" asp-route-id="@ride.RideId" class="btn btn-sm btn-info">View</a>
+
                         <a asp-page="/Rides/EditRide" asp-route-id="@ride.RideId" class="btn btn-sm btn-primary">Edit</a>
+
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@ride.RideId" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this ride?');">Delete</button>
+                        </form>
                     </td>
                 </tr>
             }
