@@ -25,7 +25,9 @@ namespace BCITGO_V6.Pages.Rides
 
         public void OnGet()
         {
-            // Step 1 → Load only active rides that are future
+            // Step 1 >> Load only active rides that are future
+
+            //-----ORIGINAL CODE BELOW
             //var query = _context.Ride
             //    .Include(r => r.User)
             //    .Include(r => r.Bookings)
@@ -35,24 +37,28 @@ namespace BCITGO_V6.Pages.Rides
             //    .Where(r => (r.DepartureDate + r.DepartureTime) > DateTime.Now)
             //    .ToList();
 
+            // ----UPDATED CODE BELOW
             var query = _context.Ride
                 .Include(r => r.User)
                 .Include(r => r.Bookings)
                 .Where(r => r.Status == "Active")
                 .ToList() // Pull to memory FIRST (added this so we can use TimeSpan safely)
-                .Where(r => r.DepartureTime != default && (r.DepartureDate + r.DepartureTime) > DateTime.Now)
+                .Where(r =>
+                    r.DepartureDate != default &&
+                    r.DepartureTime != default &&
+                    r.DepartureDate.Add(r.DepartureTime) > DateTime.Now)
                 .ToList(); // Final in-memory list
 
 
 
-            // Step 2 → Calculate Confirmed and Pending for ALL rides now
+            // Step 2 > Calculate Confirmed and Pending for ALL rides now
             foreach (var ride in query)
             {
                 ride.BookedSeats = ride.Bookings.Where(b => b.Status == "Confirmed").Sum(b => b.SeatsBooked);
                 ride.PendingRequests = ride.Bookings.Where(b => b.Status == "Pending").Sum(b => b.SeatsBooked);
             }
 
-            // Step 3 → Apply filters
+            // Step 3 >> Apply filters
             var filtered = query.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(Filter.StartLocation))

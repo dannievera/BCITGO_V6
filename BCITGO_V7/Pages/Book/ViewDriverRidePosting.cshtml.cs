@@ -30,7 +30,7 @@ namespace BCITGO_V6.Pages.Book
 
             if (Ride == null)
             {
-                // Ride not found or not active → redirect or show not found
+                // Ride not found or not active >> redirect or show not found
                 RedirectToPage("/Rides/AvailableRides");
                 return;
             }
@@ -38,7 +38,7 @@ namespace BCITGO_V6.Pages.Book
             // Calculate booked seats (exclude cancelled bookings)
             Ride.BookedSeats = Ride.Bookings.Where(b => b.Status != "Cancelled").Sum(b => b.SeatsBooked);
 
-            // Optional → Load Driver profile picture (for now use default)
+            // Load Driver profile picture (for now use default)
             // If in future you have User.ProfilePicture → you can use that
             if (!string.IsNullOrEmpty(Ride.User.ProfilePicture))
             {

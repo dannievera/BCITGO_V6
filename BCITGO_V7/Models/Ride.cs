@@ -19,7 +19,7 @@ namespace BCITGO_V6.Models
         public int TotalSeats { get; set; } 
 
         [NotMapped]
-        public int AvailableSeats => TotalSeats - BookedSeats; 
+        public int AvailableSeats => TotalSeats - BookedSeats;  //added as not mapped then I deleted on back end due to not mapped >> included for logic purposes
 
         public string? Notes { get; set; }
         public bool LuggageAllowed { get; set; }

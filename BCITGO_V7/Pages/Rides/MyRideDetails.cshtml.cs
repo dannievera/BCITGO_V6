@@ -66,7 +66,7 @@ namespace BCITGO_V6.Pages.Rides
 
             if (booking != null && booking.Status == "Pending")
             {
-                booking.Status = "Declined"; // ✅ Just Decline, no need to adjust seats anymore
+                booking.Status = "Declined"; // Just Decline, no need to adjust seats anymore
                 await _context.SaveChangesAsync();
             }
 

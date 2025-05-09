@@ -95,6 +95,7 @@ namespace BCITGO_V6.Pages.Register
 
         }
 
+        //for database mapping below -dvb
         public class RegisterInputModel
         {
             [Required]

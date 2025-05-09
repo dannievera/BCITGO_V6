@@ -39,7 +39,7 @@ namespace BCITGO_V6.Pages.Rides
                 {
                     var rideDateTime = ride.DepartureDate.Date + ride.DepartureTime;
 
-                    // ✅ Expire ride if past
+                    // Expire ride if past
                     if (rideDateTime <= now && ride.Status == "Active")
                     {
                         ride.Status = "Expired";
@@ -47,18 +47,18 @@ namespace BCITGO_V6.Pages.Rides
                         hasExpired = true;
                     }
 
-                    // ✅ Count confirmed seats only
+                    // Count confirmed seats only
                     ride.BookedSeats = _context.Booking
                         .Where(b => b.RideId == ride.RideId && b.Status == "Confirmed")
                         .Sum(b => (int?)b.SeatsBooked) ?? 0;
 
-                    // ✅ Count pending requests
+                    // Count pending requests
                     ride.PendingRequests = _context.Booking
                         .Where(b => b.RideId == ride.RideId && b.Status == "Pending")
                         .Count();
                 }
 
-                // ✅ Only save if there was any expired ride
+                // Only save if there was any expired ride
                 if (hasExpired)
                 {
                     _context.SaveChanges();
