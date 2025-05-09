@@ -7,7 +7,9 @@ namespace BCITGO_V6
 {
     public class Program
     {
-        public static void Main(string[] args)
+        //public static void Main(string[] args)
+        public static async Task Main(string[] args)
+
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,18 +25,18 @@ namespace BCITGO_V6
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add Identity services -dvb 0505
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = false; // Allow immediate login without email confirmation - dvb 0505 
-
-                // DEVELOPMENT ONLY > make password easier  - dvb 0505
+                options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 4;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
 
 
 
@@ -60,12 +62,29 @@ namespace BCITGO_V6
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
-                // Apply migrations instead of EnsureCreated 
-                context.Database.Migrate();  // Apply pending migrations to the database
+                // Apply pending migrations
+                context.Database.Migrate();
 
-                // Initialize database with seed data 
+                // Seed any default data
                 DbInitializer.Initialize(context);
+
+                // ✅ Add this block
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+                if (!await roleManager.RoleExistsAsync("Admin"))
+                {
+                    await roleManager.CreateAsync(new IdentityRole("Admin"));
+                }
+
+                var adminEmail = "admin@bcitgo.com"; // or whatever your admin email is
+                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+                if (adminUser != null && !(await userManager.IsInRoleAsync(adminUser, "Admin")))
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
             }
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
