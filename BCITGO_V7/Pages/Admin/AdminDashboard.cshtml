@@ -1,0 +1,43 @@
+﻿@page
+@model BCITGO_V6.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_UserLayout"; // or create your own _AdminLayout later
+}
+
+<h2 class="fw-semibold mb-4">Admin Dashboard</h2>
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text fs-4 fw-bold">@Model.TotalUsers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Rides</h5>
+                <p class="card-text fs-4 fw-bold">@Model.TotalRides</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Seats Booked</h5>
+                <p class="card-text fs-4 fw-bold">@Model.TotalSeats</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Open Reports</h5>
+                <p class="card-text fs-4 fw-bold">@Model.OpenReports</p>
+            </div>
+        </div>
+    </div>
+</div>

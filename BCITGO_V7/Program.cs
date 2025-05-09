@@ -83,6 +83,55 @@ namespace BCITGO_V6
                 {
                     await userManager.AddToRoleAsync(adminUser, "Admin");
                 }
+
+                // ✅ Add second default admin account
+                var newAdminEmail = "bcitgo.team@gmail.com";
+                var newAdminPassword = "admin";
+
+                var newAdmin = await userManager.FindByEmailAsync(newAdminEmail);
+                if (newAdmin == null)
+                {
+                    var identityUser = new IdentityUser
+                    {
+                        UserName = newAdminEmail,
+                        Email = newAdminEmail,
+                        EmailConfirmed = true
+                    };
+
+                    var result = await userManager.CreateAsync(identityUser, newAdminPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(identityUser, "Admin");
+
+                        // ✅ Insert into custom USERS table
+                        var newProfile = new BCITGO_V6.Models.User
+                        {
+                            FullName = "System Admin",
+                            Email = newAdminEmail,
+                            PhoneNumber = "604-000-0000",
+                            Bio = "Platform administrator",
+                            ProfilePicture = "default-profile.jpg",
+                            Role = "Admin",
+                            Status = "Active",
+                            CreatedAt = DateTime.UtcNow,
+                            LastActiveAt = DateTime.UtcNow,
+                            IdentityUserId = identityUser.Id // 🔑 map to Identity
+                        };
+
+                        context.User.Add(newProfile);
+                        await context.SaveChangesAsync();
+
+                        Console.WriteLine("✅ Default admin created: bcitgo.team@gmail.com");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            Console.WriteLine($"❌ Error creating admin: {error.Description}");
+                        }
+                    }
+                }
+
             }
 
 

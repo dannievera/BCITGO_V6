@@ -48,7 +48,7 @@ namespace BCITGO_V6.Pages.Register
                 // ✅ Role check and redirect
                 if (await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                    return RedirectToPage("/Admin/Dashboard");
+                    return RedirectToPage("/Admin/AdminDashboard");
                 }
 
                 return RedirectToPage("/AccountHome/UserHome");
