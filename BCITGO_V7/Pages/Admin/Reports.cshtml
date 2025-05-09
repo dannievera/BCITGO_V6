@@ -1,0 +1,35 @@
+﻿@* @page
+@model BCITGO_V6.Pages.Admin.ReportsModel
+@{
+    ViewData["Title"] = "Report Management";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-semibold mb-4">User Abuse Reports</h2>
+
+<table class="table table-hover shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Support ID</th>
+            <th>User Name</th>
+            <th>Details</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.Reports)
+        {
+            <tr>
+                <td>@report.SupportId</td>
+                <td>@report.UserName</td>
+                <td>@report.Details</td>
+                <td>@report.Status</td>
+                <td>
+                    <a asp-page="ReportDetails" asp-route-id="@report.SupportId" class="btn btn-sm btn-info">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@

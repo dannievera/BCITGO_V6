@@ -1,0 +1,56 @@
+﻿@page
+@model BCITGO_V6.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "Manage Users";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="mb-4 fw-semibold">Manage Users</h2>
+
+<form method="get" class="mb-3">
+    <input type="text" name="search" value="@Model.SearchTerm" class="form-control" placeholder="Search by name or email..." />
+</form>
+
+<table class="table table-hover shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>User ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Registered</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Role</td>
+                <td>@user.Status</td>
+                <td>@user.CreatedAt.ToShortDateString()</td>
+                <td>
+                    <a asp-page="UserDetails" asp-route-id="@user.UserId" class="btn btn-sm btn-primary">View</a>
+
+                    <form method="post" asp-page="./Users" asp-route-id="@user.UserId" class="d-inline">
+                        <button type="submit" name="action" value="suspend_@user.UserId" class="btn btn-sm btn-warning">Suspend</button>
+                    </form>
+
+                    <form method="post" asp-page="./Users" asp-route-id="@user.UserId" class="d-inline">
+                        <button type="submit" name="action" value="ban_@user.UserId" class="btn btn-sm btn-danger">Ban</button>
+                    </form>
+
+                    <form method="post" asp-page="./Users" asp-route-id="@user.UserId" class="d-inline">
+                        <button type="submit" name="action" value="delete_@user.UserId" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

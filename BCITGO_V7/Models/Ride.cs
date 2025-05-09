@@ -10,7 +10,7 @@ namespace BCITGO_V6.Models
         [Key]
         public int RideId { get; set; }
 
-
+        public string DriverName { get; set; }  // Added
         public string StartLocation { get; set; } = string.Empty;
         public string EndLocation { get; set; } = string.Empty;
         public DateTime DepartureDate { get; set; }

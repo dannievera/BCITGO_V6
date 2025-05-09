@@ -1,0 +1,59 @@
+﻿@page "{id}"
+@model BCITGO_V6.Pages.Admin.UserDetailsModel
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="mb-4 fw-semibold">User Details: @Model.User.FullName</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5>Email</h5>
+        <p>@Model.User.Email</p>
+    </div>
+    <div class="col-md-6">
+        <h5>Phone</h5>
+        <p>@Model.User.PhoneNumber</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5>Account Status</h5>
+        <p>@Model.User.Status</p>
+    </div>
+    <div class="col-md-6">
+        <h5>Registration Date</h5>
+        <p>@Model.User.CreatedAt.ToShortDateString()</p>
+    </div>
+</div>
+
+<h3 class="mt-5 mb-3">User's Posted Rides</h3>
+
+<table class="table table-hover shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Ride ID</th>
+            <th>Driver Name</th>
+            <th>Location</th>
+            <th>Seats Available</th>
+            <th>Price per Seat</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ride in Model.UserRides)
+        {
+            <tr>
+                <td>@ride.RideId</td>
+                <td>@ride.DriverName</td>  <!-- This should now work as 'DriverName' is in the Ride model -->
+                <td>@ride.StartLocation → @ride.EndLocation</td>
+                <td>@ride.AvailableSeats</td>  <!-- This should work because AvailableSeats is a property of Ride -->
+                <td>@ride.PricePerSeat</td>
+                <td>@ride.Status</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

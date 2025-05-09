@@ -53,111 +53,20 @@ namespace BCITGO_V6.Data
                 .Property(u => u.IdentityUserId)
                 .HasMaxLength(100);
 
+            // USERS > RIDE POINTS (user can have multiple ride points)
+            modelBuilder.Entity<RidePoint>()
+                .HasOne(rp => rp.User)
+                .WithMany()  // User can have multiple ride points
+                .HasForeignKey(rp => rp.UserId)  // Foreign key on UserId
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent deletion of user if ride points exist
 
-            //// STORES > POINT REDEMPTIONS
-            //modelBuilder.Entity<PointRedemption>()
-            //    .HasOne(pr => pr.Store)
-            //    .WithMany()
-            //    .HasForeignKey(pr => pr.StoreId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            // USERS > SUPPORT TICKETS (user can have multiple support tickets)
+            modelBuilder.Entity<SupportTicket>()
+                .HasOne(st => st.User)
+                .WithMany()  // User can have multiple support tickets
+                .HasForeignKey(st => st.UserId)  // Foreign key on UserId
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent deletion of user if support tickets exist
 
-            //// USERS > POINT REDEMPTIONS
-            //modelBuilder.Entity<PointRedemption>()
-            //    .HasOne(pr => pr.User)
-            //    .WithMany()
-            //    .HasForeignKey(pr => pr.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > RIDEPOINTS
-            //modelBuilder.Entity<RidePoint>()
-            //    .HasOne(rp => rp.User)
-            //    .WithMany()
-            //    .HasForeignKey(rp => rp.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > DONATIONS
-            //modelBuilder.Entity<Donation>()
-            //    .HasOne(d => d.User)
-            //    .WithMany()
-            //    .HasForeignKey(d => d.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > RIDES
-            //modelBuilder.Entity<Ride>()
-            //    .HasOne(r => r.User)
-            //    .WithMany()
-            //    .HasForeignKey(r => r.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > SUPPORT TICKETS
-            //modelBuilder.Entity<SupportTicket>()
-            //    .HasOne(st => st.User)
-            //    .WithMany()
-            //    .HasForeignKey(st => st.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// SUPPORT TICKETS > SUPPORT COMMENTS
-            //modelBuilder.Entity<SupportComment>()
-            //    .HasOne(sc => sc.SupportTicket)
-            //    .WithMany()
-            //    .HasForeignKey(sc => sc.TicketId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //// USERS > SUPPORT COMMENTS
-            //modelBuilder.Entity<SupportComment>()
-            //    .HasOne(sc => sc.User)
-            //    .WithMany()
-            //    .HasForeignKey(sc => sc.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > INVITES (Inviter)
-            //modelBuilder.Entity<Invite>()
-            //    .HasOne(i => i.User)
-            //    .WithMany()
-            //    .HasForeignKey(i => i.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > INVITES (Invitee)
-            //modelBuilder.Entity<Invite>()
-            //    .HasOne(i => i.Invitee)
-            //    .WithMany()
-            //    .HasForeignKey(i => i.InviteeId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// RIDES > BOOKINGS
-            //modelBuilder.Entity<Booking>()
-            //    .HasOne(b => b.Ride)
-            //    .WithMany()
-            //    .HasForeignKey(b => b.RideId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > BOOKINGS
-            //modelBuilder.Entity<Booking>()
-            //    .HasOne(b => b.User)
-            //    .WithMany()
-            //    .HasForeignKey(b => b.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// RIDES > REVIEWS
-            //modelBuilder.Entity<Review>()
-            //    .HasOne(rv => rv.Ride)
-            //    .WithMany()
-            //    .HasForeignKey(rv => rv.RideId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > REVIEWS (Reviewer)
-            //modelBuilder.Entity<Review>()
-            //    .HasOne(rv => rv.Reviewer)
-            //    .WithMany()
-            //    .HasForeignKey(rv => rv.ReviewerId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //// USERS > REVIEWS (Reviewee)
-            //modelBuilder.Entity<Review>()
-            //    .HasOne(rv => rv.Reviewee)
-            //    .WithMany()
-            //    .HasForeignKey(rv => rv.RevieweeId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
 
             // Fix for SQLite: ConcurrencyStamp nvarchar(max) not supported  

@@ -1,0 +1,40 @@
+﻿@* @page "{id}"
+@model BCITGO_V6.Pages.Admin.ReportDetailsModel
+@{
+    ViewData["Title"] = "Report Details";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="mb-4 fw-semibold">Report Details: @Model.Report.SupportId</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5>User Name</h5>
+        <p>@Model.Report.UserName</p>
+    </div>
+    <div class="col-md-6">
+        <h5>Status</h5>
+        <p>@Model.Report.Status</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Details</h5>
+        <p>@Model.Report.Details</p>
+    </div>
+</div>
+
+<form method="post">
+    <div class="form-group">
+        <label for="status">Update Status</label>
+        <select id="status" name="status" class="form-control">
+            <option value="Open" @if (Model.Report.Status == "Open") { @:selected } >Open</option>
+            <option value="Resolved" @if (Model.Report.Status == "Resolved") { @:selected } >Resolved</option>
+            <option value="Dismissed" @if (Model.Report.Status == "Dismissed") { @:selected } >Dismissed</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Update Status</button>
+</form>
+ *@

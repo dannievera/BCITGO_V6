@@ -1,0 +1,35 @@
+﻿@* @page
+@model BCITGO_V6.Pages.Admin.RidesModel
+@{
+    ViewData["Title"] = "Manage Rides";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-semibold mb-4">Manage Rides</h2>
+
+<table class="table table-hover shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Ride ID</th>
+            <th>Driver Name</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ride in Model.Rides)
+        {
+            <tr>
+                <td>@ride.RideId</td>
+                <td>@ride.DriverName</td>
+                <td>@ride.StartLocation → @ride.EndLocation</td>
+                <td>@ride.Status</td>
+                <td>
+                    <a asp-page="RideDetails" asp-route-id="@ride.RideId" class="btn btn-sm btn-info">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@

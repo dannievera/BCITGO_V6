@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f1f3f5;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .navbar {
+            background-color: #00529B;
+        }
+
+        .navbar-brand, .nav-link, .dropdown-toggle {
+            color: white !important;
+        }
+
+        .dropdown-menu a {
+            color: #333 !important;
+        }
+
+            .dropdown-menu a:hover {
+                background-color: #f8f9fa;
+            }
+
+        .content-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+            padding-left: 15px;
+        }
+
+            .sidebar a {
+                color: #fff;
+                padding: 10px 15px;
+                display: block;
+                text-decoration: none;
+            }
+
+                .sidebar a:hover {
+                    background-color: #007bff;
+                }
+
+        /* Content Area */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        footer {
+            background-color: #f1f1f1;
+            color: #666;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Content Wrapper (with Sidebar) -->
+    <div class="content-wrapper">
+
+        <!-- Admin Sidebar -->
+        <div class="sidebar">
+            <h4>Admin Dashboard</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="/Admin/AdminDashboard" class="nav-link">Dashboard Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Admin/Users" class="nav-link">Manage Users</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Admin/Rides" class="nav-link">Manage Rides</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Admin/Reports" class="nav-link">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Admin/Affiliate" class="nav-link">Affiliate Program </a>
+                </li>
+                
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content">
+            @RenderBody()  <!-- This will render the content of each page -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 BCIT GO - Admin Panel
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+﻿@* @page
+@model BCITGO_V6.Pages.Admin.UserPointsModel
+@{
+    ViewData["Title"] = "User Points Management";
+    Layout = "_AdminLayout";
+}
+
+<h2 class="fw-semibold mb-4">Manage User Points</h2>
+
+<table class="table table-hover shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>User ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Points</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.Points</td>
+                <td>
+                    <form method="post" asp-page="./UserPoints" asp-route-id="@user.UserId" class="d-inline">
+                        <button type="submit" name="action" value="edit_@user.UserId" class="btn btn-sm btn-warning">Edit</button>
+                    </form>
+                    <form method="post" asp-page="./UserPoints" asp-route-id="@user.UserId" class="d-inline">
+                        <button type="submit" name="action" value="delete_@user.UserId" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@
