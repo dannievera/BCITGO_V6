@@ -398,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/BCITGO_V7/BCITGO_V6.db-shm
+/BCITGO_V7/BCITGO_V6.db-wal
+/BCITGO_V7/BCITGO_V6.db-shm
+/BCITGO_V7/BCITGO_V6.db-wal
