@@ -25,40 +25,41 @@ namespace BCITGO_V6.Pages.Rides
 
         public void OnGet()
         {
-            // Step 1 >> Load only active rides that are future
+            var now = DateTime.Now;
 
-            //-----ORIGINAL CODE BELOW
-            //var query = _context.Ride
-            //    .Include(r => r.User)
-            //    .Include(r => r.Bookings)
-            //    .Where(r => r.Status == "Active" && r.DepartureTime != null)
-            //    .ToList()
-            //    //.Where(r => r.DepartureTime != default && (r.DepartureDate + r.DepartureTime) > DateTime.Now)
-            //    .Where(r => (r.DepartureDate + r.DepartureTime) > DateTime.Now)
-            //    .ToList();
-
-            // ----UPDATED CODE BELOW
+            // STEP 1: Load all ACTIVE rides with data into memory
             var query = _context.Ride
                 .Include(r => r.User)
                 .Include(r => r.Bookings)
                 .Where(r => r.Status == "Active")
-                .ToList() // Pull to memory FIRST (added this so we can use TimeSpan safely)
-                .Where(r =>
-                    r.DepartureDate != default &&
-                    r.DepartureTime != default &&
-                    r.DepartureDate.Add(r.DepartureTime) > DateTime.Now)
-                .ToList(); // Final in-memory list
+                .ToList(); // Pull to memory so we can safely use .Add()
 
+            // STEP 2: Remove expired rides using DateTime logic safely
 
+            //query = query
+            //    .Where(r =>
+            //        r.DepartureDate != default &&
+            //        r.DepartureTime != default &&
+            //        r.DepartureDate.Add(r.DepartureTime) > now
+            //    ).ToList();
 
-            // Step 2 > Calculate Confirmed and Pending for ALL rides now
+            query = query
+            .Where(r =>
+                r.DepartureDate != default &&
+                r.DepartureDate.Add(r.DepartureTime) > now
+            ).ToList();
+
+            // STEP 3: Compute booked + pending
             foreach (var ride in query)
             {
-                ride.BookedSeats = ride.Bookings.Where(b => b.Status == "Confirmed").Sum(b => b.SeatsBooked);
-                ride.PendingRequests = ride.Bookings.Where(b => b.Status == "Pending").Sum(b => b.SeatsBooked);
+                //ride.ConfirmedSeats = ride.Bookings?.Where(b => b.Status == "Confirmed").Sum(b => b.SeatsBooked) ?? 0;
+                //ride.PendingSeats = ride.Bookings?.Where(b => b.Status == "Pending").Sum(b => b.SeatsBooked) ?? 0;
+                ride.BookedSeats = ride.Bookings?.Where(b => b.Status == "Confirmed").Sum(b => b.SeatsBooked) ?? 0;
+                ride.PendingRequests = ride.Bookings?.Where(b => b.Status == "Pending").Count() ?? 0;
+
             }
 
-            // Step 3 >> Apply filters
+            // STEP 4: Apply Filters (same as before)
             var filtered = query.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(Filter.StartLocation))
@@ -66,7 +67,8 @@ namespace BCITGO_V6.Pages.Rides
                 var words = Filter.StartLocation.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
                 {
-                    filtered = filtered.Where(r => r.StartLocation.Contains(word, StringComparison.OrdinalIgnoreCase));
+                    filtered = filtered.Where(r =>
+                        r.StartLocation.Contains(word, StringComparison.OrdinalIgnoreCase));
                 }
             }
 
@@ -75,12 +77,13 @@ namespace BCITGO_V6.Pages.Rides
                 var words = Filter.EndLocation.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)
                 {
-                    filtered = filtered.Where(r => r.EndLocation.Contains(word, StringComparison.OrdinalIgnoreCase));
+                    filtered = filtered.Where(r =>
+                        r.EndLocation.Contains(word, StringComparison.OrdinalIgnoreCase));
                 }
             }
 
             if (Filter.DepartureDate != null)
-                filtered = filtered.Where(r => r.DepartureDate == Filter.DepartureDate);
+                filtered = filtered.Where(r => r.DepartureDate.Date == Filter.DepartureDate.Value.Date);
 
             if (Filter.MinPrice != null)
                 filtered = filtered.Where(r => r.PricePerSeat >= Filter.MinPrice);
@@ -89,11 +92,12 @@ namespace BCITGO_V6.Pages.Rides
                 filtered = filtered.Where(r => r.PricePerSeat <= Filter.MaxPrice);
 
             if (Filter.SeatsNeeded != null)
-            {
-                filtered = filtered.Where(r => (r.TotalSeats - r.BookedSeats - r.PendingRequests) >= Filter.SeatsNeeded);
-            }
+                //filtered = filtered.Where(r => (r.TotalSeats - r.BookedSeats - r.PendingRequests) >= Filter.SeatsNeeded);
+                filtered = filtered.Where(r => r.AvailableSeats >= Filter.SeatsNeeded);
 
-            // Step 4 → Sorting
+
+
+            // STEP 5: Sorting
             if (Filter.SortBy == "price")
                 filtered = filtered.OrderBy(r => r.PricePerSeat);
             else if (Filter.SortBy == "earliest")
@@ -101,9 +105,10 @@ namespace BCITGO_V6.Pages.Rides
             else
                 filtered = filtered.OrderBy(r => r.CreatedAt);
 
-            // Final Result
+            // Final output
             Rides = filtered.ToList();
         }
+
     }
 
     public class RideSearchFilter

@@ -23,6 +23,7 @@ else
                 <th>Departure</th>
                 <th>Price/Seat</th>
                 <th>Total Seats</th>
+                <th>Available Seats</th>
                 <th>Book Requests</th>
                 <th>Booked Seats</th>
                 <th>Status</th>
@@ -38,6 +39,7 @@ else
                     <td>@ride.DepartureDate.ToString("yyyy-MM-dd") @ride.DepartureTime</td>
                     <td>$@ride.PricePerSeat</td>
                     <td>@ride.TotalSeats</td>
+                    <td>@(ride.AvailableSeats)</td>
                     <td>
                         @if (ride.PendingRequests > 0)
                         {

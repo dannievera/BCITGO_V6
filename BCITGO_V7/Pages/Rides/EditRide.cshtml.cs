@@ -19,6 +19,8 @@ namespace BCITGO_V6.Pages.Rides
 
         public string SuccessMessage { get; set; }
         public string ErrorMessage { get; set; }
+        public bool IsEditBlocked => TempData["EditBlocked"] != null;
+
 
         public IActionResult OnGet(int id)
         {
@@ -29,12 +31,33 @@ namespace BCITGO_V6.Pages.Rides
                 return RedirectToPage("/Rides/PostRide");
             }
 
+            
+            int totalBooked = _context.Booking
+                .Where(b => b.RideId == Ride.RideId && (b.Status == "Confirmed" || b.Status == "Pending"))
+                .Sum(b => (int?)b.SeatsBooked) ?? 0;
+
+            if (totalBooked > 0)
+            {
+                TempData["EditBlocked"] = "This ride already has booked passengers. Editing is disabled.";
+            }
+
             return Page();
         }
+
 
         public async Task<IActionResult> OnPostAsync(string action)
         {
             var ride = _context.Ride.FirstOrDefault(r => r.RideId == Ride.RideId);
+
+            int totalBooked = _context.Booking
+                .Where(b => b.RideId == Ride.RideId && (b.Status == "Confirmed" || b.Status == "Pending"))
+                .Sum(b => (int?)b.SeatsBooked) ?? 0;
+
+            if (totalBooked > 0)
+            {
+                TempData["EditBlocked"] = "This ride already has booked passengers. Editing is disabled.";
+            }
+
 
             if (ride == null)
             {
@@ -44,11 +67,30 @@ namespace BCITGO_V6.Pages.Rides
 
             if (action == "delete")
             {
+                var hasBookings = _context.Booking
+                    .Any(b => b.RideId == ride.RideId && b.Status == "Confirmed");
+
+                if (hasBookings)
+                {
+                    TempData["DeleteWarning"] = "Warning: This ride has confirmed passengers. Deleting will cancel all bookings.";
+                }
+
+                // Mark as deleted
                 ride.Status = "Deleted";
+
+                // Cancel bookings
+                var bookings = _context.Booking.Where(b => b.RideId == ride.RideId && b.Status != "Cancelled");
+                foreach (var booking in bookings)
+                {
+                    booking.Status = "Cancelled";
+                }
+
                 await _context.SaveChangesAsync();
-                SuccessMessage = "Posting has been deleted! You can now manage your ride in 'My Rides.'";
-                return RedirectToPage("/Rides/PostRide");
+
+                SuccessMessage = "Ride deleted successfully. Affected passengers have been notified.";
+                return RedirectToPage("/Rides/MyRides");
             }
+
 
             if (!ModelState.IsValid)
             {
