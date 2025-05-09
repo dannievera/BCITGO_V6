@@ -26,13 +26,24 @@ namespace BCITGO_V6.Pages.Rides
         public void OnGet()
         {
             // Step 1 → Load only active rides that are future
+            //var query = _context.Ride
+            //    .Include(r => r.User)
+            //    .Include(r => r.Bookings)
+            //    .Where(r => r.Status == "Active" && r.DepartureTime != null)
+            //    .ToList()
+            //    //.Where(r => r.DepartureTime != default && (r.DepartureDate + r.DepartureTime) > DateTime.Now)
+            //    .Where(r => (r.DepartureDate + r.DepartureTime) > DateTime.Now)
+            //    .ToList();
+
             var query = _context.Ride
                 .Include(r => r.User)
                 .Include(r => r.Bookings)
                 .Where(r => r.Status == "Active")
-                .AsEnumerable()
-                .Where(r => (r.DepartureDate + r.DepartureTime) > DateTime.Now)
-                .ToList();
+                .ToList() // Pull to memory FIRST (added this so we can use TimeSpan safely)
+                .Where(r => r.DepartureTime != default && (r.DepartureDate + r.DepartureTime) > DateTime.Now)
+                .ToList(); // Final in-memory list
+
+
 
             // Step 2 → Calculate Confirmed and Pending for ALL rides now
             foreach (var ride in query)
