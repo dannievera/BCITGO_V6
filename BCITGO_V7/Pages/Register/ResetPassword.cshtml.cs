@@ -29,6 +29,7 @@ namespace BCITGO_V6.Pages.Register
             Input.UserId = userId;
             Input.Token = token;
 
+
             return Page();
         }
 

@@ -9,11 +9,12 @@ using System.Collections.Generic;
 
 namespace BCITGO_V6.Pages.Rides
 {
-    public class MyRideDetailsModel : PageModel
+    public class MyRideDetailsModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public MyRideDetailsModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -42,16 +43,30 @@ namespace BCITGO_V6.Pages.Rides
                 .OrderBy(b => b.CreatedAt)
                 .ToList();
 
+            LoadUnreadCount(); // under onget added
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostConfirmAsync(int id)
         {
-            var booking = _context.Booking.FirstOrDefault(b => b.BookingId == id);
+            var booking = _context.Booking
+                .Include(b => b.Ride)
+                .FirstOrDefault(b => b.BookingId == id);
 
             if (booking != null && booking.Status == "Pending")
             {
                 booking.Status = "Confirmed";
+
+                // ✅ Notify the passenger
+                var note = new Notification
+                {
+                    UserId = booking.UserId,
+                    Message = $"Your seat request for the ride from {booking.Ride.StartLocation} to {booking.Ride.EndLocation} has been confirmed.",
+                    CreatedAt = DateTime.Now
+                };
+                _context.Notification.Add(note);
+
                 await _context.SaveChangesAsync();
             }
 
@@ -66,7 +81,17 @@ namespace BCITGO_V6.Pages.Rides
 
             if (booking != null && booking.Status == "Pending")
             {
-                booking.Status = "Declined"; // Just Decline, no need to adjust seats anymore
+                booking.Status = "Declined";
+
+                // ✅ Notify the passenger
+                var note = new Notification
+                {
+                    UserId = booking.UserId,
+                    Message = $"Your booking request for the ride from {booking.Ride.StartLocation} to {booking.Ride.EndLocation} was declined.",
+                    CreatedAt = DateTime.Now
+                };
+                _context.Notification.Add(note);
+
                 await _context.SaveChangesAsync();
             }
 

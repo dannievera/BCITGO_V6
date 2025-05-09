@@ -9,7 +9,7 @@ namespace BCITGO_V6.Pages.Register
 
         private readonly UserManager<IdentityUser> _userManager;
 
-        public VerifyModel(UserManager<IdentityUser> userManager) 
+        public VerifyModel(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
@@ -31,6 +31,8 @@ namespace BCITGO_V6.Pages.Register
                 var lastSentTime = DateTime.Parse(lastSent);
                 CanResend = (DateTime.Now - lastSentTime).TotalSeconds >= 5; //change expiry here for testing -dvb
             }
+
+
         }
 
         public async Task<IActionResult> OnPostAsync()

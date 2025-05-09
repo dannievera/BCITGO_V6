@@ -23,6 +23,8 @@ namespace BCITGO_V6.Data
         public DbSet<Review> Review { get; set; } = default!;
         public DbSet<SupportComment> SupportComment { get; set; } = default!;
         public DbSet<Donation> Donation { get; set; } = default!;
+        public DbSet<Notification> Notification { get; set; } = default!;
+
 
 
 

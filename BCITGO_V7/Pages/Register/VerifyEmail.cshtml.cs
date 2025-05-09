@@ -54,6 +54,7 @@ namespace BCITGO_V6.Pages.Register
                 TempData["Error"] = "Email verification failed.";
             }
 
+
             return RedirectToPage("/Register/Login");
         }
     }

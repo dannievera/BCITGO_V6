@@ -17,6 +17,7 @@ namespace BCITGO_V6.Pages.Register
 
         // Addedd for constructor injection to pass usermanager service to the page model - dvb 0505
         public RegisterModel(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+
         {
             _userManager = userManager;
             _context = context; 
@@ -28,6 +29,7 @@ namespace BCITGO_V6.Pages.Register
 
         public void OnGet()
         {
+
         }
 
         public async Task<IActionResult> OnPostAsync()

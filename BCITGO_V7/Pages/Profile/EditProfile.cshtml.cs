@@ -9,11 +9,12 @@ using BCITGO_V6.Data;  // <-- Change namespace to your DB Context
 
 namespace BCITGO_V6.Pages.Profile
 {
-    public class EditProfileModel : PageModel
+    public class EditProfileModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public EditProfileModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -53,6 +54,9 @@ namespace BCITGO_V6.Pages.Profile
                 AboutMe = appUser.Bio;
                 ProfilePicturePath = appUser.ProfilePicture;
             }
+
+            LoadUnreadCount(); // under onget added
+
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -119,5 +123,7 @@ namespace BCITGO_V6.Pages.Profile
             SuccessMessage = "Your profile has been updated successfully.";
             return Page();
         }
+
+
     }
 }

@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BCITGO_V6.Pages.AccountHome
 {
-    public class UserHomeModel : PageModel
+    public class UserHomeModel : BasePageModel //added
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
         public UserHomeModel(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+            : base(context) //added
         {
             _userManager = userManager;
             _context = context;
@@ -34,6 +35,18 @@ namespace BCITGO_V6.Pages.AccountHome
 
             FullName = appUser.FullName;
 
+            var identityId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (appUser != null)
+            {
+                var unreadCount = _context.Notification
+                    .Where(n => n.UserId == appUser.UserId && !n.IsRead)
+                    .Count();
+
+                ViewData["UnreadCount"] = unreadCount;
+            }
+
+            LoadUnreadCount(); // under onget added
             return Page();
         }
     }

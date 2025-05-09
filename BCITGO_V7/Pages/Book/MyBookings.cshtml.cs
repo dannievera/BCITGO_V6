@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace BCITGO_V6.Pages.Book
 {
-    public class MyBookingsModel : PageModel
+    public class MyBookingsModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public MyBookingsModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -54,6 +55,8 @@ namespace BCITGO_V6.Pages.Book
             booking.Status = "Cancelled";
 
             await _context.SaveChangesAsync();
+
+            LoadUnreadCount(); // under onget added
 
             return RedirectToPage(new { success = "Your booking has been cancelled." });
         }

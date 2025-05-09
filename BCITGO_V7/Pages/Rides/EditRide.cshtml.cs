@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BCITGO_V6.Pages.Rides
 {
-    public class EditRideModel : PageModel
+    public class EditRideModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public EditRideModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -40,6 +41,8 @@ namespace BCITGO_V6.Pages.Rides
             {
                 TempData["EditBlocked"] = "This ride already has booked passengers. Editing is disabled.";
             }
+
+            LoadUnreadCount(); // under onget added
 
             return Page();
         }
@@ -109,6 +112,7 @@ namespace BCITGO_V6.Pages.Rides
             ride.PetsAllowed = Ride.PetsAllowed;
 
             await _context.SaveChangesAsync();
+
 
             SuccessMessage = "Update Successful! You can now manage your ride in 'My Rides.'";
             return Page();

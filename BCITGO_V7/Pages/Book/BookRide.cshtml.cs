@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace BCITGO_V6.Pages.Book
 {
-    public class BookRideModel : PageModel
+    public class BookRideModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public BookRideModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -41,6 +42,7 @@ namespace BCITGO_V6.Pages.Book
             // Calculate Pending requests
             Ride.PendingRequests = Ride.Bookings.Where(b => b.Status == "Pending").Sum(b => b.SeatsBooked);
 
+            LoadUnreadCount(); //added
 
             return Page();
         }
@@ -83,6 +85,21 @@ namespace BCITGO_V6.Pages.Book
 
             _context.Booking.Add(booking);
             await _context.SaveChangesAsync();
+
+            // Send a notification to the driver
+            var driver = _context.User.FirstOrDefault(u => u.UserId == ride.UserId);
+            if (driver != null)
+            {
+                var note = new Notification
+                {
+                    UserId = driver.UserId,
+                    Message = $"New booking request for your ride from {ride.StartLocation} to {ride.EndLocation}.",
+                    CreatedAt = DateTime.Now
+                };
+                _context.Notification.Add(note);
+                await _context.SaveChangesAsync();
+            }
+
 
             // Redirect to MyBookings with success message
             return RedirectToPage("/Book/MyBookings", new { success = "You have now successfully booked this ride." });

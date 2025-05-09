@@ -26,6 +26,7 @@ namespace BCITGO_V6.Pages.Register
 
         public void OnGet()
         {
+
         }
 
         public async Task<IActionResult> OnPostAsync()

@@ -7,11 +7,12 @@ using BCITGO_V6.Models;
 
 namespace BCITGO_V6.Pages.Rides
 {
-    public class PostRideModel : PageModel
+    public class PostRideModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public PostRideModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -53,6 +54,22 @@ namespace BCITGO_V6.Pages.Rides
             {
                 DepartureDate = DateTime.Today;
             }
+
+            var identityId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var appUser = _context.User.FirstOrDefault(u => u.IdentityUserId == identityId);
+
+            if (appUser != null)
+            {
+                var unreadCount = _context.Notification
+                    .Where(n => n.UserId == appUser.UserId && !n.IsRead)
+                    .Count();
+
+                ViewData["UnreadCount"] = unreadCount;
+            }
+
+            LoadUnreadCount(); // under onget added
+
         }
 
 

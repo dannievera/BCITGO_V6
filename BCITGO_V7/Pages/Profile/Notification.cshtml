@@ -1,0 +1,33 @@
+﻿@page "/Profile/Notifications"
+@model BCITGO_V6.Pages.Profile.NotificationsModel
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "_UserLayout";
+}
+
+<h3 class="mb-4 fw-semibold">Your Notifications</h3>
+
+@if (!Model.UserNotifications.Any())
+{
+    <div class="alert alert-info shadow-sm border-0 p-4">
+        You have no notifications at this time.
+    </div>
+}
+else
+{
+    <div class="card shadow-sm border-0">
+        <ul class="list-group list-group-flush">
+            @foreach (var note in Model.UserNotifications)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start py-3">
+                    <div class="me-3">
+                        <div class="fw-medium">@note.Message</div>
+                    </div>
+                    <small class="text-muted text-end" style="white-space: nowrap;">
+                        @note.CreatedAt.ToLocalTime().ToString("MMM dd, yyyy • h:mm tt")
+                    </small>
+                </li>
+            }
+        </ul>
+    </div>
+}

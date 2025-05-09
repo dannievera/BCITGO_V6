@@ -9,12 +9,13 @@ using System;
 
 namespace BCITGO_V6.Pages.Profile
 {
-    public class ProfileModel : PageModel
+    public class ProfileModel : BasePageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
         public ProfileModel(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _userManager = userManager;
             _context = context;
@@ -54,6 +55,7 @@ namespace BCITGO_V6.Pages.Profile
                 : appUser.ProfilePicture;
 
 
+            LoadUnreadCount(); // under onget added
 
             return Page();
         }

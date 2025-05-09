@@ -9,11 +9,12 @@ using System.Linq;
 
 namespace BCITGO_V6.Pages.Rides
 {
-    public class AvailableRidesModel : PageModel
+    public class AvailableRidesModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public AvailableRidesModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -107,6 +108,9 @@ namespace BCITGO_V6.Pages.Rides
 
             // Final output
             Rides = filtered.ToList();
+
+            LoadUnreadCount(); // under onget added
+
         }
 
     }

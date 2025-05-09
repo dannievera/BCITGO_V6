@@ -139,6 +139,18 @@
                 </a>
 
                 <div class="d-flex align-items-center">
+                    @* <a asp-page="/Profile/Notifications" class="nav-link position-relative me-3"> *@
+                        <a href="/Profile/Notifications" class="nav-link position-relative me-3">
+
+                        <i class="bi bi-bell-fill"></i> Notifications
+                        @if (ViewData["UnreadCount"] is int count && count > 0)
+                        {
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                @count
+                            </span>
+                        }
+                    </a>
+
                     <a asp-page="/Profile/Profile" class="nav-link me-3"><i class="bi bi-person-circle"></i> My Profile</a>
                     <a asp-page="/Index" class="nav-link me-3"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     <div class="dropdown">

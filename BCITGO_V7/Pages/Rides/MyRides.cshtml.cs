@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BCITGO_V6.Pages.Rides
 {
-    public class MyRidesModel : PageModel
+    public class MyRidesModel : BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
         public MyRidesModel(ApplicationDbContext context)
+            : base(context) // Call the base constructor
         {
             _context = context;
         }
@@ -68,6 +69,22 @@ namespace BCITGO_V6.Pages.Rides
             {
                 UserRides = new List<Ride>();
             }
+
+            var identityId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var appUser = _context.User.FirstOrDefault(u => u.IdentityUserId == identityId);
+
+            if (appUser != null)
+            {
+                var unreadCount = _context.Notification
+                    .Where(n => n.UserId == appUser.UserId && !n.IsRead)
+                    .Count();
+
+                ViewData["UnreadCount"] = unreadCount;
+            }
+
+            LoadUnreadCount(); // under onget added
+
         }
 
 
@@ -94,6 +111,27 @@ namespace BCITGO_V6.Pages.Rides
             }
 
             await _context.SaveChangesAsync();
+
+            // Notify all passengers that the ride has been cancelled
+            var affectedUserIds = ride.Bookings
+                .Where(b => b.Status == "Confirmed" || b.Status == "Pending")
+                .Select(b => b.UserId)
+                .Distinct()
+                .ToList();
+
+            foreach (var uid in affectedUserIds)
+            {
+                var note = new Notification
+                {
+                    UserId = uid,
+                    Message = $"A ride you booked from {ride.StartLocation} to {ride.EndLocation} has been cancelled by the driver.",
+                    CreatedAt = DateTime.Now
+                };
+                _context.Notification.Add(note);
+            }
+            await _context.SaveChangesAsync();
+
+
 
             return RedirectToPage(); // refresh MyRides page after delete
         }
