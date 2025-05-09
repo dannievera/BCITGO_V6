@@ -1,0 +1,60 @@
+﻿@page
+@model BCITGO_V6.Pages.Reviews.LeaveReviewModel
+@{
+    ViewData["Title"] = "Leave a Review";
+    Layout = "_UserLayout";
+}
+
+<h3 class="mb-4 fw-semibold">Leave a Review</h3>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success fw-semibold">@Model.SuccessMessage</div>
+}
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger fw-semibold">@Model.ErrorMessage</div>
+}
+
+<form method="post" class="card shadow-sm p-4">
+    <input type="hidden" asp-for="RideId" />
+    <input type="hidden" asp-for="RevieweeId" />
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">How was your ride?</label>
+        <div class="d-flex gap-2 fs-4" id="starPicker">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <i class="bi bi-star-fill text-secondary star" data-value="@i" style="cursor:pointer;"></i>
+            }
+        </div>
+        <input type="hidden" asp-for="Rating" />
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Write a review (optional)</label>
+        <textarea asp-for="ReviewText" class="form-control" maxlength="500" rows="4" placeholder="Share your feedback..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+
+@section Scripts {
+    <script>
+        const stars = document.querySelectorAll('#starPicker .star');
+        const ratingInput = document.querySelector('input[name="Rating"]');
+        let selectedRating = 0;
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                selectedRating = index + 1;
+                ratingInput.value = selectedRating;
+
+                stars.forEach((s, i) => {
+                    s.classList.remove('text-warning');
+                    s.classList.add(i < selectedRating ? 'text-warning' : 'text-secondary');
+                });
+            });
+        });
+    </script>
+}

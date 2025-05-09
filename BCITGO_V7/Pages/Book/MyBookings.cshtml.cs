@@ -40,11 +40,35 @@ namespace BCITGO_V6.Pages.Book
                 .Where(b => b.UserId == user.UserId)
                 .OrderByDescending(b => b.CreatedAt)
                 .ToList();
+
+            var now = DateTime.Now;
+            bool updatesMade = false;
+
+            foreach (var booking in Bookings)
+            {
+                var rideDateTime = booking.Ride.DepartureDate.Date + booking.Ride.DepartureTime;
+
+                // ✅ Mark completed if past and was confirmed
+                if (rideDateTime <= now && booking.Status == "Confirmed")
+                {
+                    booking.Status = "Completed";
+                    updatesMade = true;
+                }
+            }
+
+            if (updatesMade)
+            {
+                _context.SaveChanges(); // Persist completed status
+            }
+
+            LoadUnreadCount(); // update red badge count if needed
         }
+
 
         public async Task<IActionResult> OnPostCancelAsync(int id)
         {
             var booking = _context.Booking
+                .Include(b => b.Ride)
                 .FirstOrDefault(b => b.BookingId == id);
 
             if (booking == null || booking.Status == "Cancelled" || booking.Status == "Declined")
@@ -52,14 +76,30 @@ namespace BCITGO_V6.Pages.Book
                 return RedirectToPage();
             }
 
+            //  Cancel the booking
             booking.Status = "Cancelled";
+
+            //  Notify the driver
+            var ride = booking.Ride;
+            var driver = _context.User.FirstOrDefault(u => u.UserId == ride.UserId);
+
+            if (driver != null)
+            {
+                var note = new Notification
+                {
+                    UserId = driver.UserId,
+                    Message = $"A passenger has cancelled their booking for your ride from {ride.StartLocation} to {ride.EndLocation}.",
+                    CreatedAt = DateTime.Now
+                };
+                _context.Notification.Add(note);
+            }
 
             await _context.SaveChangesAsync();
 
-            LoadUnreadCount(); // under onget added
-
+            LoadUnreadCount(); // update badge if needed
             return RedirectToPage(new { success = "Your booking has been cancelled." });
         }
+
 
 
     }

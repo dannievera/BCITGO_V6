@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +45,12 @@ namespace BCITGO_V6.Pages.Register
             var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                // ✅ Role check and redirect
+                if (await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    return RedirectToPage("/Admin/Dashboard");
+                }
+
                 return RedirectToPage("/AccountHome/UserHome");
             }
             else
@@ -52,8 +58,8 @@ namespace BCITGO_V6.Pages.Register
                 ModelState.AddModelError(string.Empty, "Invalid password. <a href='/Register/ForgotPassword'>Reset your password here</a> if you forgot.");
                 return Page();
             }
-
         }
+
 
         public class LoginInputModel
         {

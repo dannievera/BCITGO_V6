@@ -60,6 +60,11 @@ namespace BCITGO_V6.Pages.Rides
 
             }
 
+            // STEP 3.1: Remove rides with 0 or negative available seats
+            query = query
+                .Where(r => (r.TotalSeats - r.BookedSeats - r.PendingRequests) > 0)
+                .ToList();
+
             // STEP 4: Apply Filters (same as before)
             var filtered = query.AsQueryable();
 

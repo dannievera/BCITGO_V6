@@ -28,7 +28,17 @@
 
     <div class="row mb-2">
         <div class="col-md-6"><strong>Notes:</strong> @(string.IsNullOrWhiteSpace(Model.Ride.Notes) ? "None" : Model.Ride.Notes)</div>
-        <div class="col-md-6"><strong>Status:</strong> <span class="badge bg-primary">@Model.Ride.Status</span></div>
+        @* @{
+            var statusBadge = Model.Ride.Status switch
+            {
+                "Completed" => "bg-success",
+                "Expired" => "bg-dark text-white",
+                "Deleted" => "bg-danger",
+                "Active" => "bg-primary",
+                _ => "bg-secondary"
+            };
+        }
+        <span class="badge @statusBadge">@Model.Ride.Status</span> *@
     </div>
 
     <div class="row mb-2">
@@ -88,6 +98,10 @@ else
                             {
                                 <span class="badge bg-primary">Confirmed</span>
                             }
+                            else if (booking.Status == "Completed")
+                            {
+                                <span class="badge bg-success">Completed</span>
+                            }
                             else if (booking.Status == "Declined")
                             {
                                 <span class="badge bg-secondary">Declined</span>
@@ -96,8 +110,18 @@ else
                             {
                                 <span class="badge bg-secondary">Cancelled</span>
                             }
+
+                            <!-- ✅ Always show Add Review button -->
+                            <a asp-page="/Reviews/LeaveReview"
+                               asp-route-rideId="@booking.RideId"
+                               asp-route-revieweeId="@booking.UserId"
+                               class="btn btn-sm btn-outline-primary">
+                                Add Review
+                            </a>
                         </div>
                     </td>
+
+
 
 
 

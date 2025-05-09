@@ -1,0 +1,75 @@
+﻿@page
+@model BCITGO_V6.Pages.Reviews.ViewReviewsModel
+@{
+    ViewData["Title"] = "My Reviews";
+    Layout = "_UserLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-semibold">My Reviews</h3>
+    <div class="btn-group">
+        <a class="btn btn-outline-primary @(Model.ViewMode == "received" ? "active" : "")" asp-page="/Reviews/ViewReviews" asp-route-ViewMode="received">Received</a>
+        <a class="btn btn-outline-primary @(Model.ViewMode == "given" ? "active" : "")" asp-page="/Reviews/ViewReviews" asp-route-ViewMode="given">Given</a>
+    </div>
+</div>
+
+@if (Model.ViewMode == "given")
+{
+    @if (!Model.GivenReviews.Any())
+    {
+        <div class="alert alert-info">You haven't left any reviews yet.</div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var review in Model.GivenReviews)
+            {
+                <div class="list-group-item">
+                    <div class="fw-semibold">To: @review.Reviewee.FullName</div>
+                    <div class="text-muted small">Ride: @review.Ride.StartLocation → @review.Ride.EndLocation</div>
+                    <div class="my-1 text-warning">
+                        @for (int i = 1; i <= review.Rating; i++)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                        }
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(review.ReviewText))
+                    {
+                        <div>@review.ReviewText</div>
+                    }
+                    <div class="text-muted small mt-1">@review.CreatedAt.ToString("MMM dd, yyyy")</div>
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    @if (!Model.ReceivedReviews.Any())
+    {
+        <div class="alert alert-info">No one has reviewed you yet.</div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var review in Model.ReceivedReviews)
+            {
+                <div class="list-group-item">
+                    <div class="fw-semibold">From: @review.Reviewer.FullName</div>
+                    <div class="text-muted small">Ride: @review.Ride.StartLocation → @review.Ride.EndLocation</div>
+                    <div class="my-1 text-warning">
+                        @for (int i = 1; i <= review.Rating; i++)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                        }
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(review.ReviewText))
+                    {
+                        <div>@review.ReviewText</div>
+                    }
+                    <div class="text-muted small mt-1">@review.CreatedAt.ToString("MMM dd, yyyy")</div>
+                </div>
+            }
+        </div>
+    }
+}

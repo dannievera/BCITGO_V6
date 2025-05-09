@@ -30,9 +30,10 @@ else
                         <th>Seats Booked</th>
                         <th>Status</th>
                         <th>Booked At</th>
-                        <th></th>
+                        <th>Review</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var booking in Model.Bookings)
                     {
@@ -42,36 +43,45 @@ else
                             "Confirmed" => "bg-success",
                             "Declined" => "bg-danger",
                             "Cancelled" => "bg-secondary",
+                            "Completed" => "bg-success",
                             _ => "bg-light text-dark"
                         };
-
-
                         <tr>
                             <td>@booking.Ride.StartLocation → @booking.Ride.EndLocation</td>
                             <td>@booking.Ride.DepartureDate.ToString("yyyy-MM-dd") @booking.Ride.DepartureTime</td>
                             <td>@booking.Ride.User.FullName</td>
                             <td><span class="badge bg-primary">@booking.SeatsBooked</span></td>
+
+                            <!-- Status Column -->
                             <td>
-                                @* <span class="badge @(booking.Status == "Confirmed" ? "bg-primary" : booking.Status == "Cancelled" ? "bg-secondary" : "bg-warning text-dark")">
-                                    @booking.Status
-                                </span> *@
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge @statusBadge mb-0">@booking.Status</span>
 
-                                <span class="badge @statusBadge">
-                                    @booking.Status
-                                </span>
-
-
-                                @if (booking.Status != "Cancelled" && booking.Status != "Completed" && booking.Status != "Declined")
-                                {
-                                    <form method="post" asp-page-handler="Cancel" asp-route-id="@booking.BookingId" class="d-inline mt-2">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel Booking</button>
-                                    </form>
-                                }
-
+                                    @if (booking.Status != "Cancelled" && booking.Status != "Completed" && booking.Status != "Declined")
+                                    {
+                                        <form method="post" asp-page-handler="Cancel" asp-route-id="@booking.BookingId" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
                             </td>
 
+
+                            <!-- Booked At -->
                             <td>@booking.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
 
+                            <!-- Review Column -->
+                            <td>
+                                <a asp-page="/Reviews/LeaveReview"
+                                   asp-route-rideId="@booking.RideId"
+                                   asp-route-revieweeId="@booking.Ride.UserId"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Review
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

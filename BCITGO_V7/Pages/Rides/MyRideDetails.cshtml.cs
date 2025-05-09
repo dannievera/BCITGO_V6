@@ -24,29 +24,70 @@ namespace BCITGO_V6.Pages.Rides
 
         public IActionResult OnGet(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _context.User.FirstOrDefault(u => u.IdentityUserId == userId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            Ride = _context.Ride
-                .Include(r => r.Bookings)
-                .FirstOrDefault(r => r.RideId == id && r.UserId == user.UserId);
-
-            if (Ride == null)
+            if (userId != null)
             {
-                return RedirectToPage("/Rides/MyRides");
+                var user = _context.User.FirstOrDefault(u => u.IdentityUserId == userId);
+                if (user != null)
+                {
+                    ViewData["UnreadCount"] = _context.Notification
+                        .Where(n => n.UserId == user.UserId && !n.IsRead)
+                        .Count();
+
+                    Ride = _context.Ride
+                        .Include(r => r.Bookings)
+                        .FirstOrDefault(r => r.RideId == id && r.UserId == user.UserId);
+
+                    // Automatically update status to Completed or Expired
+                    var rideDateTime = Ride.DepartureDate.Date + Ride.DepartureTime;
+                    if (rideDateTime <= DateTime.Now && Ride.Status == "Active")
+                    {
+                        bool wasBooked = _context.Booking
+                            .Any(b => b.RideId == Ride.RideId && b.Status == "Confirmed");
+
+                        Ride.Status = wasBooked ? "Completed" : "Expired";
+                        _context.Update(Ride);
+
+
+                        if (wasBooked)
+                        {
+                            var confirmedBookings = _context.Booking
+                                .Where(b => b.RideId == Ride.RideId && b.Status == "Confirmed")
+                                .ToList();
+
+                            foreach (var b in confirmedBookings)
+                            {
+                                b.Status = "Completed";
+                            }
+
+                            _context.UpdateRange(confirmedBookings);
+                        }
+
+                        
+                        _context.SaveChanges();
+                    }
+
+
+                    if (Ride == null)
+                    {
+                        return RedirectToPage("/Rides/MyRides");
+                    }
+
+                    Bookings = _context.Booking
+                        .Include(b => b.User)
+                        .Where(b => b.RideId == id)
+                        .OrderBy(b => b.CreatedAt)
+                        .ToList();
+
+                    LoadUnreadCount();
+                    return Page();
+                }
             }
 
-            // Load bookings with user info
-            Bookings = _context.Booking
-                .Include(b => b.User)
-                .Where(b => b.RideId == id)
-                .OrderBy(b => b.CreatedAt)
-                .ToList();
-
-            LoadUnreadCount(); // under onget added
-
-            return Page();
+            return RedirectToPage("/Rides/MyRides"); // fallback if user is null
         }
+
 
         public async Task<IActionResult> OnPostConfirmAsync(int id)
         {
